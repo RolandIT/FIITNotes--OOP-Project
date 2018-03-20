@@ -1,5 +1,12 @@
 package Main;
 
-public class MainInstance {
+import Users.User;
 
+public class MainInstance {
+	User user;
+	
+	public MainInstance(User user)
+	{
+		this.user=user;
+	}
 }

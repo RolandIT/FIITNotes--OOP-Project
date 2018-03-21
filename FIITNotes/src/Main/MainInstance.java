@@ -3,10 +3,14 @@ package Main;
 import Users.User;
 
 public class MainInstance {
-	User user;
+	User currentUser;
 	
 	public MainInstance(User user)
 	{
-		this.user=user;
+		this.currentUser=user;
+	}
+	
+	public User getCurrentUser() {
+		return currentUser;
 	}
 }

@@ -1,22 +1,27 @@
 package Main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Subjects.Subject;
-import Users.User;
+import Users.UserHandler;
 
 public class MainInstance {
-	User currentUser;
+	public UserHandler UHandler;
 	public ArrayList<Subject> subjects=new ArrayList<Subject>();
-	public MainInstance(User user)
+	public MainInstance()
 	{
-		this.currentUser=user;
+		//load all the users 
+		UHandler= new UserHandler();
+		try {
+			UHandler.LoadUsers();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		SubjectInit initiator=new SubjectInit();
 		initiator.findSubjects();
 		subjects=initiator.getSubjects();
-	}
-	
-	public User getCurrentUser() {
-		return currentUser;
 	}
 }

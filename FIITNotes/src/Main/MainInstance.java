@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Subjects.Subject;
+import Subjects.SubjectHandler;
 import Users.UserHandler;
 
 public class MainInstance {
 	public UserHandler UHandler;
+	public SubjectHandler SHandler;
 	public ArrayList<Subject> subjects=new ArrayList<Subject>();
 	public MainInstance()
 	{
@@ -20,8 +22,12 @@ public class MainInstance {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SubjectInit initiator=new SubjectInit();
-		initiator.findSubjects();
-		subjects=initiator.getSubjects();
+		SHandler=new SubjectHandler();
+		try {
+			SHandler.findSubjects();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		subjects=SHandler.getSubjects();
 	}
 }

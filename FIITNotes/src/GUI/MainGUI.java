@@ -3,7 +3,6 @@ package GUI;
 import javafx.application.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -12,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.*;
 
 import Main.MainInstance;
+import Subjects.NewSubjectListener;
 import Subjects.Subject;
 
 public class MainGUI extends Application{	
@@ -28,6 +28,9 @@ public class MainGUI extends Application{
 	
 	public MainGUI(MainInstance main) {
 		this.main=main;
+	}
+	public void addButtons() {
+		
 	}
 	public void start(Stage FIITNotes) {
 		
@@ -85,9 +88,16 @@ public class MainGUI extends Application{
 		MainCenter.setVgap(50);
 		MainCenter.setStyle("-fx-background-color: grey;");
 		
-		
-		
-		
+		//observer pattern 
+		main.SHandler.addListener(new NewSubjectListener() {
+			@Override
+			public void onNewSubject() {
+				Button btn = new Button(main.subjects.get((main.subjects.size())-1).getSubjName());
+				btn.setMinHeight(150);
+				btn.setMinWidth(150);
+				MainCenter.getChildren().add(btn);
+			}
+		});
 		Scene MainWindow = new Scene(MainPane,1000,600);
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.setTitle("FIITNotes-" + (main.UHandler.getCurrentUser()).getName());

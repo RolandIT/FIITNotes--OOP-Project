@@ -8,5 +8,8 @@ public class Instructor extends User {
 		super(name, password);
 	
 	}
-
+	@Override
+	public String getUserType() {
+		return "Instructor";
+	}
 }

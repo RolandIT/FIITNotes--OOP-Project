@@ -47,5 +47,9 @@ public class User implements Serializable{
 		e.printStackTrace();
 	}
 	}
+	
+	public String getUserType() {
+		return "User";
+	}
 }
 

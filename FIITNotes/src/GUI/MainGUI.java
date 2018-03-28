@@ -10,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 
+import java.util.ArrayList;
+
 import Main.MainInstance;
 import Subjects.NewSubjectListener;
 import Subjects.Subject;
@@ -25,16 +27,13 @@ public class MainGUI extends Application{
 	private Label newSubNameL = new Label("Subject Name");
 	private TextField newSubNameT = new TextField();
 	private Label errMess = new Label();
+	private ArrayList<Button> subjButtons = new ArrayList<Button>();
 	
 	public MainGUI(MainInstance main) {
 		this.main=main;
 	}
-	public void addButtons() {
-		
-	}
 	public void start(Stage FIITNotes) {
-		
-		
+	
 		BorderPane MainPane = new BorderPane();
 		FlowPane MainCenter = new FlowPane();
 		GridPane MainRight = new GridPane();
@@ -46,10 +45,13 @@ public class MainGUI extends Application{
 		MainPane.setCenter(MainCenter);
 		MainPane.setRight(MainRight);
 		
-		MainRight.add(addNewSubject,0,0);
-		MainRight.add(newSubNameL,0,1);
-		MainRight.add(newSubNameT,0,2);
-		MainRight.add(errMess, 0, 3);
+		if((main.UHandler.getCurrentUser().getUserType()).equals("Instructor"))
+		{
+			MainRight.add(addNewSubject,0,0);
+			MainRight.add(newSubNameL,0,1);
+			MainRight.add(newSubNameT,0,2);
+			MainRight.add(errMess, 0, 3);
+		}
 		errMess.setTextFill(Color.RED);
 		
 		MainLeft.getChildren().add(followedLab);
@@ -71,6 +73,7 @@ public class MainGUI extends Application{
 			btn.setMinHeight(150);
 			btn.setMinWidth(150);
 			MainCenter.getChildren().add(btn);
+			subjButtons.add(btn);
 		}
 		
 		//Layout settings
@@ -96,14 +99,21 @@ public class MainGUI extends Application{
 				btn.setMinHeight(150);
 				btn.setMinWidth(150);
 				MainCenter.getChildren().add(btn);
+				subjButtons.add(btn);
 			}
 		});
+		
 		Scene MainWindow = new Scene(MainPane,1000,600);
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.setTitle("FIITNotes-" + (main.UHandler.getCurrentUser()).getName());
 		FIITNotes.show();
 		
 		//button action 
+		for(Button btn : subjButtons) {
+			btn.setOnAction(e->{
+				MainCenter.getChildren().clear();
+			});
+		}
 		logOut.setOnAction(e->{
 			main = null;
 			LoginGUI login = new LoginGUI();
@@ -111,13 +121,13 @@ public class MainGUI extends Application{
 		}
 		);
 		addNewSubject.setOnAction(e->{
+			
 			if(main.SHandler.newSubjectHandle(newSubNameT.getText(),(main.UHandler.getCurrentUser()).getName()))
 			{
 				newSubNameT.clear();
 			}
 			else
-				errMess.setText("Subject already exists!");
-				
+				errMess.setText("Subject already exists!");	
 		});
 				
 }

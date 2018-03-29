@@ -113,7 +113,6 @@ public class MainGUI extends Application{
 					MainCenter.getChildren().clear();
 					MainCenter.getChildren().add(followSubj);
 					MainCenter.getChildren().add(backB);
-					System.out.println(main.SHandler.getCurrentSubject().getOwnerID()+ " "+ main.UHandler.getCurrentUser().getID());
 					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
 						MainCenter.getChildren().add(removeSubj);	
 				});
@@ -197,7 +196,9 @@ public class MainGUI extends Application{
 			else
 				errMess.setText("Subject already exists!");	
 		});
-				
+		removeSubj.setOnAction(e->{
+			
+		});	
 }
 
 }

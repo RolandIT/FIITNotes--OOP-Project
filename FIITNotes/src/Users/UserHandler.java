@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import Subjects.Subject;
+
 public class UserHandler {
 	public ArrayList<User> allUsers  = new ArrayList<User>();
 	User currentUser;
@@ -56,6 +58,19 @@ public class UserHandler {
 		allUsers.add(newU);
 		newU.saveUser();
 		return true;
+	}
+	
+	public void removeFollowedHandler(Subject s)
+	{
+		for(User u:allUsers)
+		{
+			u.removeFollowedSubject(s);
+			try {
+				u.saveUser();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	//returns the current user

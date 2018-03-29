@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 import Subjects.Subject;
+import javafx.scene.control.Button;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -80,6 +81,19 @@ public class User implements Serializable{
 	//returns the users ID
 	public int getID() {	
 		return ID;
+	}
+	
+	//
+	public void removeFollowedSubject(Subject s)
+	{
+		ArrayList<Subject> toRemove = new ArrayList<Subject>();
+		for(Subject subj : followedSubj)
+		{
+			if(subj.getSubjName().equals(s.getSubjName()))
+				toRemove.add(subj);
+				
+		}
+		followedSubj.removeAll(toRemove);
 	}
 }
 

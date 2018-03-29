@@ -242,7 +242,35 @@ public class MainGUI extends Application{
 		
 		
 		removeSubj.setOnAction(e->{
+			ArrayList<Button> toRemove = new ArrayList<Button>();
+			for(Button btn : subjButtons) {
+				if(btn.getText().equals(main.SHandler.getCurrentSubject().getSubjName()))
+					toRemove.add(btn);
+			}
+			subjButtons.removeAll(toRemove);
+			toRemove.clear();
+			for(Button btn:followedSubjButtons) {
+				if(btn.getText().equals(main.SHandler.getCurrentSubject().getSubjName()))
+					toRemove.add(btn);
+			}
+			followedSubjButtons.removeAll(toRemove);
+			toRemove.clear();
 			
+			main.UHandler.removeFollowedHandler(main.SHandler.getCurrentSubject());
+			main.SHandler.removeCurrentSubject();
+			
+			MainLeft.getChildren().clear();
+			MainLeft.getChildren().add(followedLab);
+			MainCenter.getChildren().clear();
+			MainCenter.getChildren().add(subjectsLab);
+			
+			for(Button btn : subjButtons) {
+				MainCenter.getChildren().add(btn);
+			}
+			
+			for(Button btn : followedSubjButtons) {
+				MainLeft.getChildren().add(btn);
+			}
 		});	
 }
 

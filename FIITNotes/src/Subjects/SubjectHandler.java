@@ -56,6 +56,13 @@ public class SubjectHandler {
 		dir.mkdir();
 		return true;
 	}
+	public void removeCurrentSubject()
+	{
+		subjects.remove(currentSubject);
+		File subjFile = new File("Subjects/"+currentSubject.getSubjName()+".ser");
+		subjFile.delete();
+		currentSubject=null;
+	}
 	
 	//handles new follow requests 
 	public void newFollowHandler(User currentUser,Subject subject) throws IOException {

@@ -19,7 +19,8 @@ import javafx.stage.Stage;
 
 public class LoginGUI extends Application{
 		MainInstance mainInstance;
-		//LogPane
+		
+		//login nodes 
 		private TextField name = new TextField();
 		private Button login = new Button("Login");
 		private Label NLab = new Label("Name:");
@@ -28,6 +29,7 @@ public class LoginGUI extends Application{
 		private Label loginFail = new Label();
 		private PasswordField password = new PasswordField();
 		
+		//new account nodes 
 		private Label newName = new Label("Enter new username:");
 		private TextField newNameT = new TextField();
 		private Label newPassword = new Label("Enter your password:");
@@ -40,11 +42,14 @@ public class LoginGUI extends Application{
 		final ToggleGroup rbgroup = new ToggleGroup();
 		
 	public void start(Stage FIITNotes){
+		//start a new main Instance to handle user data 
 		mainInstance=new MainInstance();
+		
 		
 		FlowPane LogPane = new FlowPane(10,10);
 		FlowPane NewAccPane = new FlowPane(10,10);
 		
+		//login nodes added 
 		LogPane.getChildren().add(NLab);
 		LogPane.getChildren().add(name);
 		LogPane.getChildren().add(PLab);
@@ -54,6 +59,7 @@ public class LoginGUI extends Application{
 		LogPane.getChildren().add(loginFail);
 		loginFail.setTextFill(Color.RED);
 		
+		//new account nodes added 
 		NewAccPane.getChildren().add(newName);
 		NewAccPane.getChildren().add(newNameT);
 		NewAccPane.getChildren().add(newPassword);
@@ -83,7 +89,7 @@ public class LoginGUI extends Application{
 		NewAccPane.setHgap(10);
 		NewAccPane.setPrefWrapLength(5);
 		
-		
+		//scene settings 
 		Scene LogScene = new Scene (LogPane,300,400);
 		Scene NewAccScene = new Scene(NewAccPane,300,400);
 		
@@ -92,6 +98,10 @@ public class LoginGUI extends Application{
 		FIITNotes.show();
 		
 		//Button action 
+		
+		//call the login handler to check for user 
+		//if the user exists open a new main GUI
+		//display error message if login fails
 		login.setOnAction(e -> {
 			if(mainInstance.UHandler.LoginHandle(name.getText(),password.getText()))
 			{
@@ -102,12 +112,16 @@ public class LoginGUI extends Application{
 				loginFail.setText("Invalid username or password!");}			
 		);
 		
+		//change scene to new account creation if clicked 
 		newAcc.setOnAction(e->{
 			FIITNotes.setScene(NewAccScene);
 			FIITNotes.setTitle("FIITNotes -create a new account");
 			FIITNotes.show();
 		});
 		
+		//call handler to handle new user request 
+		//if new user is created change scene to login 
+		//else display an error message 
 		confirm.setOnAction(e->{
 			try {
 				if(mainInstance.UHandler.NewUserHandle(newNameT.getText(), newPasswordT.getText(),(String)(rbgroup.getSelectedToggle().getUserData())))
@@ -123,6 +137,7 @@ public class LoginGUI extends Application{
 			}
 		});
 		
+		//change scene back to login 
 		existingUser.setOnAction(e->{
 			FIITNotes.setScene(LogScene);
 			FIITNotes.setTitle("FIITNotes Login");

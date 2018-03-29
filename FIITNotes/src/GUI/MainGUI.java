@@ -35,6 +35,7 @@ public class MainGUI extends Application{
 	//subject window 
 	private Button backB=new Button("Back");
 	private Button followSubj = new Button("Follow");
+	private Button removeSubj = new Button("Delete subject");
 	public MainGUI(MainInstance main) {
 		this.main=main;
 	}
@@ -112,6 +113,9 @@ public class MainGUI extends Application{
 					MainCenter.getChildren().clear();
 					MainCenter.getChildren().add(followSubj);
 					MainCenter.getChildren().add(backB);
+					System.out.println(main.SHandler.getCurrentSubject().getOwnerID()+ " "+ main.UHandler.getCurrentUser().getID());
+					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
+						MainCenter.getChildren().add(removeSubj);	
 				});
 			}
 		});
@@ -130,6 +134,9 @@ public class MainGUI extends Application{
 					MainCenter.getChildren().clear();
 					MainCenter.getChildren().add(followSubj);
 					MainCenter.getChildren().add(backB);
+					System.out.println(main.SHandler.getCurrentSubject().getOwnerID()+ " "+ main.UHandler.getCurrentUser().getID());
+					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
+						MainCenter.getChildren().add(removeSubj);	
 				});
 			}
 		});
@@ -146,6 +153,9 @@ public class MainGUI extends Application{
 				MainCenter.getChildren().clear();
 				MainCenter.getChildren().add(followSubj);
 				MainCenter.getChildren().add(backB);
+				System.out.println(main.SHandler.getCurrentSubject().getOwnerID()+ " "+ main.UHandler.getCurrentUser().getID());
+				if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
+					MainCenter.getChildren().add(removeSubj);	
 			});
 		}
 		for(Button btn : followedSubjButtons) {
@@ -154,6 +164,8 @@ public class MainGUI extends Application{
 				MainCenter.getChildren().clear();
 				MainCenter.getChildren().add(followSubj);
 				MainCenter.getChildren().add(backB);
+				if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
+					MainCenter.getChildren().add(removeSubj);	
 			});
 		}
 		followSubj.setOnAction(e->{
@@ -178,7 +190,7 @@ public class MainGUI extends Application{
 		);
 		addNewSubject.setOnAction(e->{
 			
-			if(main.SHandler.newSubjectHandle(newSubNameT.getText(),(main.UHandler.getCurrentUser()).getName()))
+			if(main.SHandler.newSubjectHandle(newSubNameT.getText(),main.UHandler.getCurrentUser().getID()))
 			{
 				newSubNameT.clear();
 			}

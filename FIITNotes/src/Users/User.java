@@ -14,6 +14,7 @@ public class User implements Serializable{
 	
 	private String name;
 	private String password;
+	protected int ID;
 	private ArrayList<Subject> followedSubj=new ArrayList<Subject>();
 	
 	public User (String name,String password) {
@@ -58,6 +59,10 @@ public class User implements Serializable{
 	
 	public String getUserType() {
 		return "User";
+	}
+	public int getID() {
+		
+		return ID;
 	}
 }
 

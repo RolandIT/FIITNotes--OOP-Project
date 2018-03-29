@@ -6,17 +6,19 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Users.User;
+
 public class Subject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static int numberOfSubjects=0;
 	private String subjName;
-	private String owner;
+	private int ownerID;
 	private ArrayList<Document> Documents;
 	
-	public Subject(String name,String owner) {
+	public Subject(String name,int ownerID) {
 		subjName=name;
 		numberOfSubjects++;
-		this.owner=owner;
+		this.ownerID=ownerID;
 	}
 	
 	public void addDocument(Document document) {
@@ -26,8 +28,8 @@ public class Subject implements Serializable {
 	public String getSubjName() {
 		return subjName;
 	}	
-	public String getOwner() {
-		return owner;
+	public int getOwnerID() {
+		return ownerID;
 	}
 	public void saveSubject() throws IOException {
 	try {

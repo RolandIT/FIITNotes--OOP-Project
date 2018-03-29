@@ -31,8 +31,8 @@ public class SubjectHandler {
 			}		
 		}
 	}
-	public boolean newSubjectHandle(String subjName,String owner) {
-		Subject newSubj=new Subject(subjName,owner);
+	public boolean newSubjectHandle(String subjName,int ownerID) {
+		Subject newSubj=new Subject(subjName,ownerID);
 		for(Subject s:subjects)
 		{
 			if(s.getSubjName().equals(subjName))

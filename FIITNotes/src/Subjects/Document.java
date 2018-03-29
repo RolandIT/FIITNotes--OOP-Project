@@ -13,8 +13,8 @@ public class Document {
 	public ArrayList<Comment> comments;
 	
 	public Document(User author,String docName) {
-		this.author=author;
-		this.docName=docName;
+		this.author = author;
+		this.docName = docName;
 	}
 
 	public User getAuthor() {

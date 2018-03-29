@@ -16,9 +16,9 @@ public class Subject implements Serializable {
 	private ArrayList<Document> Documents;
 	
 	public Subject(String name,int ownerID) {
-		subjName=name;
+		subjName = name;
 		numberOfSubjects++;
-		this.ownerID=ownerID;
+		this.ownerID = ownerID;
 	}
 	
 	public void addDocument(Document document) {
@@ -27,19 +27,22 @@ public class Subject implements Serializable {
 
 	public String getSubjName() {
 		return subjName;
-	}	
+	}
+	
 	public int getOwnerID() {
 		return ownerID;
 	}
+	
+	//save object to the subjects folder
 	public void saveSubject() throws IOException {
-	try {
-		FileOutputStream Fileout = new FileOutputStream("Subjects/" + this.subjName+".ser");
-		ObjectOutputStream Objectout = new ObjectOutputStream(Fileout);
-		Objectout.writeObject(this);
-		Objectout.close();
-		Fileout.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		try {
+			FileOutputStream Fileout = new FileOutputStream("Subjects/" + this.subjName+".ser");
+			ObjectOutputStream Objectout = new ObjectOutputStream(Fileout);
+			Objectout.writeObject(this);
+			Objectout.close();
+			Fileout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

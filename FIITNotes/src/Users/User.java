@@ -18,9 +18,12 @@ public class User implements Serializable{
 	private ArrayList<Subject> followedSubj=new ArrayList<Subject>();
 	
 	public User (String name,String password) {
-		this.name=name;
-		this.password=password;		
+		this.name = name;
+		this.password = password;		
 	}
+	
+	//add subject to the followed subjects list if 
+	//requested subject isnt already there 
 	public boolean followSubject(Subject Subject) {
 		for(Subject s : followedSubj)
 		{	
@@ -30,38 +33,52 @@ public class User implements Serializable{
 		followedSubj.add(Subject);
 		return true;
 	}
+	
+	//returns an arraylist of all followed subjects
 	public ArrayList<Subject> getFollowedSubjects(){
 		return followedSubj;
 	}
+	
+	//returns the password 
 	public String getPassword() {
 		return password;
 	}
+	
+	//sets the password
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	//returns the username
 	public String getName() {
 		return name;
 	}
+	
+	//sets the username
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	//saves the user to the Users folder 
 	public void saveUser() throws IOException {
-	try {
-		FileOutputStream Fileout = new FileOutputStream("Users/" + this.name+".ser");
-		ObjectOutputStream Objectout = new ObjectOutputStream(Fileout);
-		Objectout.writeObject(this);
-		Objectout.close();
-		Fileout.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		try {
+			FileOutputStream Fileout = new FileOutputStream("Users/" + this.name+".ser");
+			ObjectOutputStream Objectout = new ObjectOutputStream(Fileout);
+			Objectout.writeObject(this);
+			Objectout.close();
+			Fileout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
+	//returns the type of user 
 	public String getUserType() {
 		return "User";
 	}
-	public int getID() {
-		
+	
+	//returns the users ID
+	public int getID() {	
 		return ID;
 	}
 }

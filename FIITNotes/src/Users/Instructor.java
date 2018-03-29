@@ -10,6 +10,7 @@ public class Instructor extends User {
 		InstructorCount++;
 		ID=InstructorCount+10000;
 	}
+	
 	@Override
 	public String getUserType() {
 		return "Instructor";

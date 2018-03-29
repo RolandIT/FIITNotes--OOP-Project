@@ -13,8 +13,8 @@ public class MainInstance {
 	public ArrayList<Subject> subjects=new ArrayList<Subject>();
 	public MainInstance()
 	{
-		//load all the users 
-		UHandler= new UserHandler();
+		//load all the users once instance is created 
+		UHandler = new UserHandler();
 		try {
 			UHandler.LoadUsers();
 		} catch (ClassNotFoundException e) {
@@ -22,12 +22,14 @@ public class MainInstance {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SHandler=new SubjectHandler();
+		
+		//load all the existing subjects 
+		SHandler = new SubjectHandler();
 		try {
 			SHandler.findSubjects();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		subjects=SHandler.getSubjects();
+		subjects = SHandler.getSubjects();
 	}
 }

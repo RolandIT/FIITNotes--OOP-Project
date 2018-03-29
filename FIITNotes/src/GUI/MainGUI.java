@@ -10,9 +10,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Main.MainInstance;
+import Subjects.NewFollowedSubj;
 import Subjects.NewSubjectListener;
 import Subjects.Subject;
 
@@ -28,7 +30,11 @@ public class MainGUI extends Application{
 	private TextField newSubNameT = new TextField();
 	private Label errMess = new Label();
 	private ArrayList<Button> subjButtons = new ArrayList<Button>();
+	private ArrayList<Button> followedSubjButtons = new ArrayList<Button>();
 	
+	//subject window 
+	private Button backB=new Button("Back");
+	private Button followSubj = new Button("Follow");
 	public MainGUI(MainInstance main) {
 		this.main=main;
 	}
@@ -61,12 +67,13 @@ public class MainGUI extends Application{
 		logName.setText("Logged in as : "+(main.UHandler.getCurrentUser()).getName());
 		
 		MainCenter.getChildren().add(subjectsLab);
-		for(Subject subj:(main.UHandler.getCurrentUser()).getFollowedSubjects())
+		for(Subject subj:((main.UHandler.getCurrentUser()).getFollowedSubjects()))
 		{
 			Button btn = new Button(subj.getSubjName());
 			btn.setMinHeight(150);
 			btn.setMinWidth(150);
 			MainLeft.getChildren().add(btn);
+			followedSubjButtons.add(btn);
 		}
 		for(Subject subj : main.subjects) {
 			Button btn = new Button(subj.getSubjName());
@@ -85,12 +92,11 @@ public class MainGUI extends Application{
 		GridPane.setHalignment(errMess, HPos.CENTER);
 		MainRight.setVgap(20);
 		
-		MainCenter.setAlignment(Pos.CENTER);
 		MainCenter.setPadding(new Insets(10, 10, 10, 10)); 
 		MainCenter.setHgap(50);
 		MainCenter.setVgap(50);
 		MainCenter.setStyle("-fx-background-color: grey;");
-		
+		backB.setAlignment(Pos.TOP_RIGHT);
 		//observer pattern 
 		main.SHandler.addListener(new NewSubjectListener() {
 			@Override
@@ -100,6 +106,31 @@ public class MainGUI extends Application{
 				btn.setMinWidth(150);
 				MainCenter.getChildren().add(btn);
 				subjButtons.add(btn);
+				
+				btn.setOnAction(e->{
+					main.SHandler.setCurrentSubject(btn.getText());
+					MainCenter.getChildren().clear();
+					MainCenter.getChildren().add(followSubj);
+					MainCenter.getChildren().add(backB);
+				});
+			}
+		});
+		main.SHandler.addListener(new NewFollowedSubj() {
+			
+			@Override
+			public void onNewFollowed(Subject subject) {
+				Button btn = new Button(subject.getSubjName());
+				btn.setMinHeight(150);
+				btn.setMinWidth(150);
+				MainLeft.getChildren().add(btn);
+				followedSubjButtons.add(btn);
+				
+				btn.setOnAction(e->{
+					main.SHandler.setCurrentSubject(btn.getText());
+					MainCenter.getChildren().clear();
+					MainCenter.getChildren().add(followSubj);
+					MainCenter.getChildren().add(backB);
+				});
 			}
 		});
 		
@@ -111,9 +142,34 @@ public class MainGUI extends Application{
 		//button action 
 		for(Button btn : subjButtons) {
 			btn.setOnAction(e->{
+				main.SHandler.setCurrentSubject(btn.getText());
 				MainCenter.getChildren().clear();
+				MainCenter.getChildren().add(followSubj);
+				MainCenter.getChildren().add(backB);
 			});
 		}
+		for(Button btn : followedSubjButtons) {
+			btn.setOnAction(e->{
+				main.SHandler.setCurrentSubject(btn.getText());
+				MainCenter.getChildren().clear();
+				MainCenter.getChildren().add(followSubj);
+				MainCenter.getChildren().add(backB);
+			});
+		}
+		followSubj.setOnAction(e->{
+			try {
+				main.SHandler.newFollowHandler(main.UHandler.getCurrentUser(),main.SHandler.getCurrentSubject());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
+		backB.setOnAction(e->{
+			MainCenter.getChildren().clear();
+			MainCenter.getChildren().add(subjectsLab);
+			for(Button btn : subjButtons) {
+				MainCenter.getChildren().add(btn);
+			}
+		});
 		logOut.setOnAction(e->{
 			main = null;
 			LoginGUI login = new LoginGUI();

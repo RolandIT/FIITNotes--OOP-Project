@@ -20,7 +20,15 @@ public class User implements Serializable{
 		this.name=name;
 		this.password=password;		
 	}
-	
+	public boolean followSubject(Subject Subject) {
+		for(Subject s : followedSubj)
+		{	
+			if(s.getSubjName().equals(Subject.getSubjName()))
+				return false;	
+		}
+		followedSubj.add(Subject);
+		return true;
+	}
 	public ArrayList<Subject> getFollowedSubjects(){
 		return followedSubj;
 	}

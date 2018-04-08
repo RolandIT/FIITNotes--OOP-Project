@@ -18,8 +18,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginGUI extends Application{
-		MainInstance mainInstance;
 		
+		GUIController controller = new GUIController();
 		//login nodes 
 		private TextField name = new TextField();
 		private Button login = new Button("Login");
@@ -42,8 +42,6 @@ public class LoginGUI extends Application{
 		final ToggleGroup rbgroup = new ToggleGroup();
 		
 	public void start(Stage FIITNotes){
-		//start a new main Instance to handle user data 
-		mainInstance=new MainInstance();
 		
 		
 		FlowPane LogPane = new FlowPane(10,10);
@@ -76,6 +74,8 @@ public class LoginGUI extends Application{
 		rbS.setSelected(true);
 		rbI.setToggleGroup(rbgroup);
 		
+		
+		
 		//Layout settings
 		LogPane.setAlignment(Pos.CENTER);
 		LogPane.setOrientation(Orientation.VERTICAL);
@@ -99,20 +99,13 @@ public class LoginGUI extends Application{
 		
 		//Button action 
 		
-		//call the login handler to check for user 
-		//if the user exists open a new main GUI
-		//display error message if login fails
+		//attempt to log in using the login method from the controller
+		//returns error message is it fails , starts MainGUI if successful 
 		login.setOnAction(e -> {
-			if(mainInstance.UHandler.LoginHandle(name.getText(),password.getText()))
-			{
-				MainGUI main = new MainGUI(mainInstance);
-				main.start(FIITNotes);
-			}
-			else
-				loginFail.setText("Invalid username or password!");}			
+				loginFail.setText(controller.Login(name.getText(),password.getText(),FIITNotes));}		
 		);
 		
-		//change scene to new account creation if clicked 
+		//changes scene to new account creation if clicked 
 		newAcc.setOnAction(e->{
 			FIITNotes.setScene(NewAccScene);
 			FIITNotes.setTitle("FIITNotes -create a new account");
@@ -123,21 +116,15 @@ public class LoginGUI extends Application{
 		//if new user is created change scene to login 
 		//else display an error message 
 		confirm.setOnAction(e->{
+			System.out.println("fef");
 			try {
-				if(mainInstance.UHandler.NewUserHandle(newNameT.getText(), newPasswordT.getText(),(String)(rbgroup.getSelectedToggle().getUserData())))
-				{
-					FIITNotes.setScene(LogScene);
-					FIITNotes.setTitle("FIITNotes Login");
-					FIITNotes.show();
-				}
-				else
-					errMess.setText("Username already in use!");
+				errMess.setText(controller.CreateNewUser(newNameT.getText(), newPasswordT.getText(),(String) rbgroup.getSelectedToggle().getUserData(),FIITNotes));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
 		
-		//change scene back to login 
+		//changes scene back to login 
 		existingUser.setOnAction(e->{
 			FIITNotes.setScene(LogScene);
 			FIITNotes.setTitle("FIITNotes Login");

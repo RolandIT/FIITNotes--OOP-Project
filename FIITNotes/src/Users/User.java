@@ -90,8 +90,7 @@ public class User implements Serializable{
 		for(Subject subj : followedSubj)
 		{
 			if(subj.getSubjName().equals(s.getSubjName()))
-				toRemove.add(subj);
-				
+				toRemove.add(subj);	
 		}
 		followedSubj.removeAll(toRemove);
 	}

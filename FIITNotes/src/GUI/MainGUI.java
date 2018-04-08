@@ -77,7 +77,6 @@ public class MainGUI extends Application{
 		MainTop.getChildren().add(logName);	
 		MainTop.getChildren().add(logOut);
 		logName.setText("Logged in as : "+(main.UHandler.getCurrentUser()).getName());
-		
 		//Center panel
 		MainCenter.getChildren().add(subjectsLab);
 		//Button added to the left Pane for each subject 
@@ -90,6 +89,7 @@ public class MainGUI extends Application{
 			MainLeft.getChildren().add(btn);
 			followedSubjButtons.add(btn);//button added to the array of subject buttons
 		}
+		
 		//button added to the center Pane for each existing subject in the current instance  
 		for(Subject subj : main.subjects) {
 			Button btn = new Button(subj.getSubjName());

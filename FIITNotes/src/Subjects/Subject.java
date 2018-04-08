@@ -6,8 +6,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Users.User;
-
 public class Subject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static int numberOfSubjects=0;

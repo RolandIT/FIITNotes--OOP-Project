@@ -13,14 +13,13 @@ import javafx.stage.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Main.MainInstance;
 import Subjects.NewFollowedSubj;
 import Subjects.NewSubjectListener;
 import Subjects.Subject;
 
 public class MainGUI extends Application{	
-	//Main class
-	private MainInstance main;
+	//controller
+	private GUIController controller;
 	
 	//nodes on the main window
 	private Label logName = new Label();
@@ -41,11 +40,13 @@ public class MainGUI extends Application{
 	
 	//Constructor for the main GUI, MainInstance object main is passed down on
 	//creation so current instance information is accessible 
-	public MainGUI(MainInstance main) {
-		this.main = main;
+	public MainGUI(GUIController controller) {
+		this.controller = controller;
 	}
 	
 	public void start(Stage FIITNotes) {
+		
+		FIITNotes.setTitle("FIITNotes - Student");
 		
 		//Panes on the main Window
 		BorderPane MainPane = new BorderPane();
@@ -62,13 +63,13 @@ public class MainGUI extends Application{
 		//Panel Nodes
 		
 		//Right panel nodes added only if the current user is of type Instructor
-		if((main.UHandler.getCurrentUser().getUserType()).equals("Instructor"))
-		{
-			MainRight.add(addNewSubject,0,0);
-			MainRight.add(newSubNameL,0,1);
-			MainRight.add(newSubNameT,0,2);
-			MainRight.add(errMess, 0, 3);
-		}
+		MainRight.add(addNewSubject,0,0);
+		MainRight.add(newSubNameL,0,1);
+		MainRight.add(newSubNameT,0,2);
+		MainRight.add(errMess, 0, 3);
+		controller.setUserScene(MainRight,FIITNotes);
+		
+		
 		errMess.setTextFill(Color.RED);
 		//Left panel
 		MainLeft.getChildren().add(followedLab);
@@ -76,27 +77,20 @@ public class MainGUI extends Application{
 		//Top panel
 		MainTop.getChildren().add(logName);	
 		MainTop.getChildren().add(logOut);
-		logName.setText("Logged in as : "+(main.UHandler.getCurrentUser()).getName());
+		logName.setText("Logged in as : "+(controller.main.UHandler.getCurrentUser()).getName());
 		//Center panel
 		MainCenter.getChildren().add(subjectsLab);
+		
 		//Button added to the left Pane for each subject 
 		//that the current user follows 
-		for(Subject subj:((main.UHandler.getCurrentUser()).getFollowedSubjects()))
-		{
-			Button btn = new Button(subj.getSubjName());
-			btn.setMinHeight(150);
-			btn.setMinWidth(150);
+		followedSubjButtons = controller.setFollowedSubjButtons(150,150);
+		for(Button btn : followedSubjButtons)
 			MainLeft.getChildren().add(btn);
-			followedSubjButtons.add(btn);//button added to the array of subject buttons
-		}
-		
-		//button added to the center Pane for each existing subject in the current instance  
-		for(Subject subj : main.subjects) {
-			Button btn = new Button(subj.getSubjName());
-			btn.setMinHeight(150);
-			btn.setMinWidth(150);
+			
+		//button added to the center Pane for each existing subject in the current instance 
+		subjButtons=controller.setSubjButtons(150,150);
+		for(Button btn : subjButtons) {
 			MainCenter.getChildren().add(btn);
-			subjButtons.add(btn);//button added to the array of subject buttons
 		}
 		
 		//Layout settings
@@ -114,76 +108,31 @@ public class MainGUI extends Application{
 		MainCenter.setStyle("-fx-background-color: grey;");
 		backB.setAlignment(Pos.TOP_RIGHT);
 		
-		//observer pattern - listener added to new subject listeners 
-		main.SHandler.addListener(new NewSubjectListener() {
-			//Anonymous class with onNewSubject method implemented
-			//onNewSubject adds a new button to the center Pane each 
-			//time its called by the Handler
-			@Override
-			public void onNewSubject() {
-				Button btn = new Button(main.subjects.get((main.subjects.size())-1).getSubjName());
-				btn.setMinHeight(150);
-				btn.setMinWidth(150);
-				MainCenter.getChildren().add(btn);
-				subjButtons.add(btn);
-				
-				//button action 
-				btn.setOnAction(e->{
-					main.SHandler.setCurrentSubject(btn.getText());
-					MainCenter.getChildren().clear();
-					MainCenter.getChildren().add(followSubj);
-					MainCenter.getChildren().add(backB);
-					//remove subject button only added if the use is the owner of the subject
-					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-						MainCenter.getChildren().add(removeSubj);	
-				});
-			}
-		});
-		//observer pattern - listener added to newFollowedSubject listeners
-		main.SHandler.addListener(new NewFollowedSubj() {
-			//Anonymous class with onNewFollowed method implemented
-			//onNewFollowed adds a new button to the left Pane each 
-			//time its called by the Handler
-			@Override
-			public void onNewFollowed(Subject subject) {
-				Button btn = new Button(subject.getSubjName());
-				btn.setMinHeight(150);
-				btn.setMinWidth(150);
-				MainLeft.getChildren().add(btn);
-				followedSubjButtons.add(btn);
-				
-				//button action
-				btn.setOnAction(e->{
-					main.SHandler.setCurrentSubject(btn.getText());
-					MainCenter.getChildren().clear();
-					MainCenter.getChildren().add(followSubj);
-					MainCenter.getChildren().add(backB);
-					//remove subject button only added if the use is the owner of the subject
-					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-						MainCenter.getChildren().add(removeSubj);	
-				});
-			}
-		});
+		
 		
 		//Scene settings
 		Scene MainWindow = new Scene(MainPane,1000,600);
 		FIITNotes.setScene(MainWindow);
-		FIITNotes.setTitle("FIITNotes-" + (main.UHandler.getCurrentUser()).getName());
 		FIITNotes.show();
 		
-		//Button action 
+		ArrayList<Node> studentNodes=new ArrayList<Node>();
+		studentNodes.add(followSubj);
+		studentNodes.add(backB);
 		
+		ArrayList<Node> instructorNodes=new ArrayList<Node>();
+		instructorNodes.add(removeSubj);
+		
+		//Adds listeners for new subjects creation 
+		controller.addNewSubjectListener(MainCenter,subjButtons,studentNodes,instructorNodes);
+		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,studentNodes,instructorNodes);
+		
+		//Button action 
 		//change the center pane when a subject button is clicked
 		//according to the subject it belongs to 
 		for(Button btn : subjButtons) {
 			btn.setOnAction(e->{
-				main.SHandler.setCurrentSubject(btn.getText());
-				MainCenter.getChildren().clear();
-				MainCenter.getChildren().add(followSubj);
-				MainCenter.getChildren().add(backB);
-				//remove subject button only added if the use is the owner of the subject
-				if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-					MainCenter.getChildren().add(removeSubj);	
+				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
+				controller.main.SHandler.setCurrentSubject(btn.getText());
 			});
 		}
 		
@@ -191,20 +140,15 @@ public class MainGUI extends Application{
 		//according to the subject it belongs to
 		for(Button btn : followedSubjButtons) {
 			btn.setOnAction(e->{
-				main.SHandler.setCurrentSubject(btn.getText());
-				MainCenter.getChildren().clear();
-				MainCenter.getChildren().add(followSubj);
-				MainCenter.getChildren().add(backB);
-				//remove subject button only added if the use is the owner of the subject
-				if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-					MainCenter.getChildren().add(removeSubj);	
+				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
+				controller.main.SHandler.setCurrentSubject(btn.getText());
 			});
 		}
 		
 		//handle a new follow request when clicked 
 		followSubj.setOnAction(e->{
 			try {
-				main.SHandler.newFollowHandler(main.UHandler.getCurrentUser(),main.SHandler.getCurrentSubject());
+				controller.main.SHandler.newFollowHandler(controller.main.UHandler.getCurrentUser(),controller.main.SHandler.getCurrentSubject());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -222,7 +166,7 @@ public class MainGUI extends Application{
 		//delete the current instance of main 
 		//call the login GUI 
 		logOut.setOnAction(e->{
-			main = null;
+			controller.main = null;
 			LoginGUI login = new LoginGUI();
 			login.start(FIITNotes);
 		}
@@ -231,33 +175,13 @@ public class MainGUI extends Application{
 		//clear the new subject panel if the subject handler 
 		//returns true , display error message if false 
 		addNewSubject.setOnAction(e->{
-			
-			if(main.SHandler.newSubjectHandle(newSubNameT.getText(),main.UHandler.getCurrentUser().getID()))
-			{
+				errMess.setText(controller.setAddNewSubjectButton(newSubNameT.getText()));	
 				newSubNameT.clear();
-			}
-			else
-				errMess.setText("Subject already exists!");	
 		});
 		
-		
+		//TODO
 		removeSubj.setOnAction(e->{
-			ArrayList<Button> toRemove = new ArrayList<Button>();
-			for(Button btn : subjButtons) {
-				if(btn.getText().equals(main.SHandler.getCurrentSubject().getSubjName()))
-					toRemove.add(btn);
-			}
-			subjButtons.removeAll(toRemove);
-			toRemove.clear();
-			for(Button btn:followedSubjButtons) {
-				if(btn.getText().equals(main.SHandler.getCurrentSubject().getSubjName()))
-					toRemove.add(btn);
-			}
-			followedSubjButtons.removeAll(toRemove);
-			toRemove.clear();
-			
-			main.UHandler.removeFollowedHandler(main.SHandler.getCurrentSubject());
-			main.SHandler.removeCurrentSubject();
+			controller.removeSubject(subjButtons,followedSubjButtons);
 			
 			MainLeft.getChildren().clear();
 			MainLeft.getChildren().add(followedLab);

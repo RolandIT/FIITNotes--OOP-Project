@@ -2,7 +2,6 @@ package GUI;
 
 import java.io.IOException;
 
-import Main.MainInstance;
 import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -116,7 +115,6 @@ public class LoginGUI extends Application{
 		//if new user is created change scene to login 
 		//else display an error message 
 		confirm.setOnAction(e->{
-			System.out.println("fef");
 			try {
 				errMess.setText(controller.CreateNewUser(newNameT.getText(), newPasswordT.getText(),(String) rbgroup.getSelectedToggle().getUserData(),FIITNotes));
 			} catch (IOException e1) {
@@ -130,7 +128,6 @@ public class LoginGUI extends Application{
 			FIITNotes.setTitle("FIITNotes Login");
 			FIITNotes.show();
 		});
-
 	}
 	 public static void main(String[] args) {
 	        launch(args);

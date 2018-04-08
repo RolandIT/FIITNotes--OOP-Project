@@ -1,5 +1,7 @@
 package Users;
 
+import GUI.GUIController;
+
 public class Student extends User {
 	private static final long serialVersionUID = 1L;
 
@@ -9,8 +11,8 @@ public class Student extends User {
 	}
 	
 	@Override
-	public String getUserType() {
-		return "Student";
+	public void applyPriviliges() {
+		GUIController.clearPane();
 	}
 	
 }

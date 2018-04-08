@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 
 import Subjects.Subject;
-import javafx.scene.control.Button;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -73,9 +72,8 @@ public class User implements Serializable{
 		}
 	}
 	
-	//returns the type of user 
-	public String getUserType() {
-		return "User";
+	//
+	public void applyPriviliges() {
 	}
 	
 	//returns the users ID

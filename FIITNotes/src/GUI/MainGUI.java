@@ -13,10 +13,6 @@ import javafx.stage.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Subjects.NewFollowedSubj;
-import Subjects.NewSubjectListener;
-import Subjects.Subject;
-
 public class MainGUI extends Application{	
 	//controller
 	private GUIController controller;

@@ -14,7 +14,7 @@ public class Instructor extends User {
 	}
 	
 	@Override
-	public void applyPriviliges() {
+	public void applyPrivileges() {
 		GUIController.changeTitle();
 	}
 }

@@ -73,7 +73,7 @@ public class User implements Serializable{
 	}
 	
 	//
-	public void applyPriviliges() {
+	public void applyPrivileges() {
 	}
 	
 	//returns the users ID

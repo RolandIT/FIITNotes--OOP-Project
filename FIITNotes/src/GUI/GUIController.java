@@ -63,7 +63,7 @@ public class GUIController {
 	public void setUserScene(Pane pn,Stage stg) {
 		currentStage = stg;
 		currentPane = pn;
-		main.UHandler.getCurrentUser().applyPriviliges();
+		main.UHandler.getCurrentUser().applyPrivileges();
 	}
 	
 	//TODO

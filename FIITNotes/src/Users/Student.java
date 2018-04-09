@@ -11,7 +11,7 @@ public class Student extends User {
 	}
 	
 	@Override
-	public void applyPriviliges() {
+	public void applyPrivileges() {
 		GUIController.clearPane();
 	}
 	

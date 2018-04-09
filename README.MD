@@ -5,10 +5,10 @@ Po prihlásení sa ako uèite¾ budeme ma monos vytvori novı predmet a taktie p
 
 ## Odovzdávanie II 
 
-..* Dedenie - Instructor a Student dedí z triedy User
+* Dedenie - Instructor a Student dedí z triedy User
 
-..* Agregácia - SubjectHandler agreguje objekty triedy Subject 
+* Agregácia - SubjectHandler agreguje objekty triedy Subject 
 
-..* Polymorfizmus - Userhandler obsahuje objekt currentUser typu User kde je uloenı Student alebo Instructor. Následne sa na currentUser zavolá metóda applyPrivileges() ktorá vykoná rozne zmeny podla typu usera
+* Polymorfizmus - Userhandler obsahuje objekt currentUser typu User kde je uloenı Student alebo Instructor. Následne sa na currentUser zavolá metóda applyPrivileges() ktorá vykoná rozne zmeny podla typu usera
 
-..* Oddelená logika - logika rieená cez rozlièné handlery a GUIController 
+* Oddelená logika - logika rieená cez rozlièné handlery a GUIController 

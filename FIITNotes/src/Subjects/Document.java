@@ -1,37 +1,27 @@
 package Subjects;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import Users.User;
-
 public class Document {
-	private User author;
+	
 	private String docName;
-	private int rating;
-	private int instRating;
+	private File docFile;
 	
 	public ArrayList<Comment> comments;
 	
-	public Document(User author,String docName) {
-		this.author = author;
+	public Document(File docFile,String folder,String docName) {
+		this.docFile=docFile;
 		this.docName = docName;
 	}
-
-	public User getAuthor() {
-		return author;
-	}
-
-	public String getDocName() {
+	
+	public String getName() {
 		return docName;
 	}
-
-	public int getRating() {
-		return rating;
+	
+	public File getFile() {
+		return docFile;
 	}
-
-	public int getInstRating() {
-		return instRating;
-	}		
 }
 
 

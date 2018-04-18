@@ -3,6 +3,7 @@ package Main;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Subjects.DocumentHandler;
 import Subjects.Subject;
 import Subjects.SubjectHandler;
 import Users.UserHandler;
@@ -10,6 +11,7 @@ import Users.UserHandler;
 public class MainInstance {
 	public UserHandler UHandler;
 	public SubjectHandler SHandler;
+	public DocumentHandler DHandler;
 	public ArrayList<Subject> subjects=new ArrayList<Subject>();
 	public MainInstance()
 	{
@@ -31,5 +33,8 @@ public class MainInstance {
 			e.printStackTrace();
 		}
 		subjects = SHandler.getSubjects();
+		
+		DHandler=new DocumentHandler();
+		
 	}
 }

@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,8 +21,7 @@ public class MainGUI extends Application{
 	//nodes on the main window
 	private Label logName = new Label();
 	private Button logOut = new Button("Log Out");
-	private Label subjectsLab = new Label("Subjects : ");
-	private Label followedLab = new Label("Followed Subjects : ");
+	private Label followedLab = new Label("Followed Subjects");
 	private Button addNewSubject = new Button("Add Subject");
 	private Label newSubNameL = new Label("Subject Name");
 	private TextField newSubNameT = new TextField();
@@ -33,6 +33,10 @@ public class MainGUI extends Application{
 	private Button backB = new Button("Back");
 	private Button followSubj = new Button("Follow");
 	private Button removeSubj = new Button("Delete subject");
+	private Button addDocument = new Button("Add a new document");
+	private TextField newDocumentName = new TextField();
+	private Label newDocumentL=new Label("Document name");
+	private Label documentsL=new Label("List of all documents");
 	
 	//Constructor for the main GUI, MainInstance object main is passed down on
 	//creation so current instance information is accessible 
@@ -50,6 +54,8 @@ public class MainGUI extends Application{
 		GridPane MainRight = new GridPane();
 		VBox MainLeft = new VBox();
 		FlowPane MainTop = new FlowPane();
+		VBox CenterLeft=new VBox();
+		GridPane CenterRight = new GridPane();
 		
 		MainPane.setTop(MainTop);
 		MainPane.setLeft(MainLeft);         
@@ -64,25 +70,31 @@ public class MainGUI extends Application{
 		MainRight.add(newSubNameT,0,2);
 		MainRight.add(errMess, 0, 3);
 		controller.setUserScene(MainRight,FIITNotes);
-		
-		
 		errMess.setTextFill(Color.RED);
+		
 		//Left panel
 		MainLeft.getChildren().add(followedLab);
-		
+		//Button added to the left Pane for each subject 
+		//that the current user follows 
+		followedSubjButtons = controller.setFollowedSubjButtons(100,10);
+		for(Button btn : followedSubjButtons)
+		MainLeft.getChildren().add(btn);
+				
 		//Top panel
 		MainTop.getChildren().add(logName);	
 		MainTop.getChildren().add(logOut);
 		logName.setText("Logged in as : "+(controller.main.UHandler.getCurrentUser()).getName());
-		//Center panel
-		MainCenter.getChildren().add(subjectsLab);
 		
-		//Button added to the left Pane for each subject 
-		//that the current user follows 
-		followedSubjButtons = controller.setFollowedSubjButtons(150,150);
-		for(Button btn : followedSubjButtons)
-			MainLeft.getChildren().add(btn);
-			
+		//Center panel
+		CenterRight.add(newDocumentL,0,0);
+		CenterRight.add(newDocumentName,0,1);
+		CenterRight.add(addDocument,0,2);
+		
+		GridPane.setHalignment(newDocumentL, HPos.CENTER);
+		GridPane.setHalignment(addDocument, HPos.CENTER);
+		GridPane.setHalignment(newDocumentName, HPos.CENTER);
+		CenterRight.setVgap(20);
+		
 		//button added to the center Pane for each existing subject in the current instance 
 		subjButtons=controller.setSubjButtons(150,150);
 		for(Button btn : subjButtons) {
@@ -90,24 +102,37 @@ public class MainGUI extends Application{
 		}
 		
 		//Layout settings
-		MainTop.setHgap(800);
+		MainTop.setHgap(650);
 		
 		GridPane.setMargin(addNewSubject, new Insets(15, 0, 0, 0));
 		GridPane.setHalignment(addNewSubject, HPos.CENTER);
 		GridPane.setHalignment(newSubNameL, HPos.CENTER);
 		GridPane.setHalignment(errMess, HPos.CENTER);
 		MainRight.setVgap(20);
+		MainLeft.setSpacing(10);
+		MainLeft.setAlignment(Pos.TOP_CENTER);
 		
-		MainCenter.setPadding(new Insets(10, 10, 10, 10)); 
-		MainCenter.setHgap(50);
-		MainCenter.setVgap(50);
-		MainCenter.setStyle("-fx-background-color: grey;");
+		
+		MainCenter.setPadding(new Insets(35, 35, 35, 35)); 
+		MainCenter.setHgap(35);
+		MainCenter.setVgap(35);
 		backB.setAlignment(Pos.TOP_RIGHT);
+		MainCenter.setAlignment(Pos.TOP_CENTER);
+		MainTop.setPadding(new Insets(10, 10, 10, 10)); 
+		MainLeft.setPadding(new Insets(10, 10, 10, 10)); 
 		
-		
+		//Style settings 
+		newDocumentL.setId("documentL");
+		documentsL.setId("documentL");
+		MainCenter.setId("MainCenter");
+		CenterLeft.setId("CenterLeft");
+		MainLeft.setId("MainLeft");
+		MainRight.setId("MainRight");
+		MainTop.setId("MainTop");
 		
 		//Scene settings
-		Scene MainWindow = new Scene(MainPane,1000,600);
+		Scene MainWindow = new Scene(MainPane,880,500);
+		MainWindow.getStylesheets().add("GUIStyle.css");
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.show();
 		
@@ -118,8 +143,14 @@ public class MainGUI extends Application{
 		ArrayList<Node> instructorNodes=new ArrayList<Node>();
 		instructorNodes.add(removeSubj);
 		
+		ArrayList<Pane> subjectPanes=new ArrayList<Pane>();
+		subjectPanes.add(CenterRight);
+		subjectPanes.add(CenterLeft);
+		
 		//Adds listeners for new subjects creation 
-		controller.addNewSubjectListener(MainCenter,subjButtons,studentNodes,instructorNodes);
+		CenterLeft.getChildren().clear();
+		CenterLeft.getChildren().add(documentsL);
+		controller.addNewSubjectListener(MainCenter,subjButtons,studentNodes,instructorNodes,subjectPanes);
 		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,studentNodes,instructorNodes);
 		
 		//Button action 
@@ -129,6 +160,11 @@ public class MainGUI extends Application{
 			btn.setOnAction(e->{
 				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
+				CenterLeft.getChildren().clear();
+				CenterLeft.getChildren().add(documentsL);
+				controller.addAllDocuments(CenterLeft);
+				MainCenter.getChildren().add(CenterLeft);
+				MainCenter.getChildren().add(CenterRight);
 			});
 		}
 		
@@ -138,6 +174,11 @@ public class MainGUI extends Application{
 			btn.setOnAction(e->{
 				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
+				CenterLeft.getChildren().clear();
+				CenterLeft.getChildren().add(documentsL);
+				controller.addAllDocuments(CenterLeft);
+				MainCenter.getChildren().add(CenterLeft);
+				MainCenter.getChildren().add(CenterRight);
 			});
 		}
 		
@@ -153,7 +194,6 @@ public class MainGUI extends Application{
 		//restore the center pane to the default settings
 		backB.setOnAction(e->{
 			MainCenter.getChildren().clear();
-			MainCenter.getChildren().add(subjectsLab);
 			for(Button btn : subjButtons) {
 				MainCenter.getChildren().add(btn);
 			}
@@ -182,7 +222,6 @@ public class MainGUI extends Application{
 			MainLeft.getChildren().clear();
 			MainLeft.getChildren().add(followedLab);
 			MainCenter.getChildren().clear();
-			MainCenter.getChildren().add(subjectsLab);
 			
 			for(Button btn : subjButtons) {
 				MainCenter.getChildren().add(btn);
@@ -192,6 +231,21 @@ public class MainGUI extends Application{
 				MainLeft.getChildren().add(btn);
 			}
 		});	
+		
+		//TODO
+		addDocument.setOnAction(e->{
+			try {
+				controller.addNewDocument(newDocumentName.getText(),FIITNotes);
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			newDocumentName.clear();
+			CenterLeft.getChildren().clear();
+			CenterLeft.getChildren().add(documentsL);
+			controller.addAllDocuments(CenterLeft);
+		});
 }
 
 }

@@ -46,6 +46,9 @@ public class LoginGUI extends Application{
 		FlowPane LogPane = new FlowPane(10,10);
 		FlowPane NewAccPane = new FlowPane(10,10);
 		
+		LogPane.setId("MainCenter");
+		NewAccPane.setId("MainCenter");
+		
 		//login nodes added 
 		LogPane.getChildren().add(NLab);
 		LogPane.getChildren().add(name);
@@ -91,6 +94,9 @@ public class LoginGUI extends Application{
 		//scene settings 
 		Scene LogScene = new Scene (LogPane,300,400);
 		Scene NewAccScene = new Scene(NewAccPane,300,400);
+		LogScene.getStylesheets().add("GUIStyle.css");
+		NewAccScene.getStylesheets().add("GUIStyle.css");
+		
 		
 		FIITNotes.setScene(LogScene);
 		FIITNotes.setTitle("FIITNotes Login");

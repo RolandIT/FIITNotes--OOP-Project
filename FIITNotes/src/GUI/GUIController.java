@@ -1,15 +1,25 @@
 package GUI;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import Main.MainInstance;
+import Subjects.Document;
 import Subjects.NewFollowedSubj;
 import Subjects.NewSubjectListener;
 import Subjects.Subject;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GUIController {
@@ -95,7 +105,7 @@ public class GUIController {
 	}
 	
 	//TODO
-	public ArrayList<Button> addNewSubjectListener(Pane pn,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes) {
+	public ArrayList<Button> addNewSubjectListener(Pane pn,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes,ArrayList<Pane>subjpns) {
 		//observer pattern - listener added to new subject listeners 
 		main.SHandler.addListener(new NewSubjectListener() {
 		//Anonymous class with onNewSubject method implemented
@@ -121,6 +131,8 @@ public class GUIController {
 					for(Node nd:instNodes)
 					pn.getChildren().add(nd);
 				}
+				for(Pane pns:subjpns)
+					pn.getChildren().add(pns);
 			});
 										
 			}
@@ -153,8 +165,8 @@ public class GUIController {
 			@Override
 			public void onNewFollowed(Subject subject) {
 				Button btn = new Button(subject.getSubjName());
-				btn.setMinHeight(150);
-				btn.setMinWidth(150);
+				btn.setMinHeight(10);
+				btn.setMinWidth(100);
 				pn.getChildren().add(btn);
 				btns.add(btn);
 				
@@ -205,4 +217,49 @@ public class GUIController {
 		main.UHandler.removeFollowedHandler(main.SHandler.getCurrentSubject());
 		main.SHandler.removeCurrentSubject();
 	}
+	
+	//TODO
+	static class fileOperations{
+		private static String getFileExtension(File file) {
+	    String fileName = file.getName();
+	    if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".")!= 0)
+	        return fileName.substring(fileName.lastIndexOf(".")+1);
+	        else return "";
+		}
+		
+		public static void copyFile(FileInputStream src,Path dest) throws IOException{
+		Files.copy(src,dest); 
+		}
+	}
+	
+	//TODO
+	public void addNewDocument(String docName,Stage stg) throws FileNotFoundException, IOException {
+		String folder = main.SHandler.getCurrentSubject().getSubjName();
+		FileChooser fileChooser = new FileChooser();
+		File source = fileChooser.showOpenDialog(stg);
+		File destination = new File("Documents/" + folder + "/"+docName + "." + fileOperations.getFileExtension(source));
+	    fileOperations.copyFile(new FileInputStream(source),Paths.get("Documents/" + folder + "/" + docName + "." + fileOperations.getFileExtension(source)));
+        main.DHandler.addDocument(destination,folder, docName);
+	}
+	
+	//TODO
+	public void addAllDocuments(Pane pn) {
+			ArrayList<Document> docs=new ArrayList<Document>();
+			main.DHandler.discoverDocuments(main.SHandler.getCurrentSubject().getSubjName());
+			docs = main.DHandler.getDocuments();
+			
+			for(Document doc:docs)
+			{
+				Hyperlink link=new Hyperlink(doc.getName());
+				pn.getChildren().add(link);
+				
+				link.setOnAction(e->{
+					try {
+						Desktop.getDesktop().open(doc.getFile());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				});
+			}
+		}
 }

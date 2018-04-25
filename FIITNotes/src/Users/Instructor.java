@@ -17,4 +17,8 @@ public class Instructor extends User {
 	public void applyPrivileges() {
 		GUIController.changeTitle();
 	}
+	
+	public String getType() {
+		return "Instructor";
+	}
 }

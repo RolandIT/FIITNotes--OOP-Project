@@ -15,4 +15,8 @@ public class Student extends User {
 		GUIController.clearPane();
 	}
 	
+	public String getType() {
+		return "Student";
+	}
+	
 }

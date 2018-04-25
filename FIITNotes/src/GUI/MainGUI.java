@@ -35,8 +35,9 @@ public class MainGUI extends Application{
 	private Button removeSubj = new Button("Delete subject");
 	private Button addDocument = new Button("Add a new document");
 	private TextField newDocumentName = new TextField();
-	private Label newDocumentL=new Label("Document name");
-	private Label documentsL=new Label("List of all documents");
+	private Label newDocumentL = new Label("Document name");
+	private Label documentsL = new Label("List of all documents");
+	private Button unfollowSubj = new Button ("Unfollow");
 	
 	//Constructor for the main GUI, MainInstance object main is passed down on
 	//creation so current instance information is accessible 
@@ -47,7 +48,7 @@ public class MainGUI extends Application{
 	public void start(Stage FIITNotes) {
 		
 		FIITNotes.setTitle("FIITNotes - Student");
-		
+		FIITNotes.setResizable(false);
 		//Panes on the main Window
 		BorderPane MainPane = new BorderPane();
 		FlowPane MainCenter = new FlowPane();
@@ -57,6 +58,7 @@ public class MainGUI extends Application{
 		VBox CenterLeft=new VBox();
 		GridPane CenterRight = new GridPane();
 		ScrollPane MainCenterScroll = new ScrollPane();
+		HBox CenterControls = new HBox();
 		
 		MainPane.setTop(MainTop);
 		MainPane.setLeft(MainLeft);         
@@ -73,7 +75,7 @@ public class MainGUI extends Application{
 		MainRight.add(newSubNameL,0,1);
 		MainRight.add(newSubNameT,0,2);
 		MainRight.add(errMess, 0, 3);
-		controller.setUserScene(MainRight,FIITNotes);
+		controller.setUserScene(MainPane,FIITNotes);
 		errMess.setId("red");
 		
 		//Left panel
@@ -125,6 +127,10 @@ public class MainGUI extends Application{
 		MainTop.setPadding(new Insets(10, 10, 10, 10)); 
 		MainLeft.setPadding(new Insets(10, 10, 10, 10)); 
 		
+		CenterControls.setSpacing(45);
+		CenterControls.setMinWidth(700);
+		CenterControls.setAlignment(Pos.TOP_CENTER);
+		
 		//Style settings 
 		newDocumentL.setId("documentL");
 		documentsL.setId("documentL");
@@ -140,9 +146,11 @@ public class MainGUI extends Application{
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.show();
 		
-		ArrayList<Node> studentNodes=new ArrayList<Node>();
-		studentNodes.add(followSubj);
-		studentNodes.add(backB);
+	
+		CenterControls.getChildren().add(followSubj);
+		CenterControls.getChildren().add(backB);
+		CenterControls.getChildren().add(unfollowSubj);
+		
 		
 		ArrayList<Node> instructorNodes=new ArrayList<Node>();
 		instructorNodes.add(removeSubj);
@@ -155,21 +163,22 @@ public class MainGUI extends Application{
 		//Adds listeners for new subjects creation 
 		CenterLeft.getChildren().clear();
 		CenterLeft.getChildren().add(documentsL);
-		controller.addNewSubjectListener(MainCenter,subjButtons,studentNodes,instructorNodes,subjectPanes);
-		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,studentNodes,instructorNodes,subjectPanes);
+		controller.addNewSubjectListener(MainCenter,subjButtons,CenterControls,instructorNodes,subjectPanes);
+		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,CenterControls,instructorNodes,subjectPanes);
 		
 		//Button action 
 		//change the center pane when a subject button is clicked
 		//according to the subject it belongs to 
 		for(Button btn : subjButtons) {
 			btn.setOnAction(e->{
-				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
+				controller.setSubjButtonAction(MainCenter,CenterControls,instructorNodes,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
 				CenterLeft.getChildren().clear();
 				CenterLeft.getChildren().add(documentsL);
 				controller.addAllDocuments(CenterLeft);
 				MainCenter.getChildren().add(CenterLeft);
 				MainCenter.getChildren().add(CenterRight);
+				GUIController.clearPane();
 			});
 		}
 		
@@ -177,15 +186,17 @@ public class MainGUI extends Application{
 		//according to the subject it belongs to
 		for(Button btn : followedSubjButtons) {
 			btn.setOnAction(e->{
-				controller.setSubjButtonAction(MainCenter,studentNodes,instructorNodes,btn.getText());
+				controller.setSubjButtonAction(MainCenter,CenterControls,instructorNodes,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
 				CenterLeft.getChildren().clear();
 				CenterLeft.getChildren().add(documentsL);
 				controller.addAllDocuments(CenterLeft);
 				MainCenter.getChildren().add(CenterLeft);
 				MainCenter.getChildren().add(CenterRight);
+				GUIController.clearPane();
 			});
 		}
+		
 		
 		//handle a new follow request when clicked 
 		followSubj.setOnAction(e->{
@@ -204,6 +215,12 @@ public class MainGUI extends Application{
 			}
 			CenterLeft.getChildren().clear();
 			CenterLeft.getChildren().add(documentsL);
+			controller.setRight(MainPane,MainRight);
+			CenterControls.getChildren().clear();
+			CenterControls.getChildren().add(followSubj);
+			CenterControls.getChildren().add(backB);
+			CenterControls.getChildren().add(unfollowSubj);
+			
 		});
 		
 		//delete the current instance of main 
@@ -229,7 +246,11 @@ public class MainGUI extends Application{
 			MainLeft.getChildren().clear();
 			MainLeft.getChildren().add(followedLab);
 			MainCenter.getChildren().clear();
-			
+			CenterControls.getChildren().clear();
+			CenterControls.getChildren().add(followSubj);
+			CenterControls.getChildren().add(backB);
+			CenterControls.getChildren().add(unfollowSubj);
+			controller.setRight(MainPane,MainRight);
 			for(Button btn : subjButtons) {
 				MainCenter.getChildren().add(btn);
 			}

@@ -45,7 +45,7 @@ public class LoginGUI extends Application{
 		
 		FlowPane LogPane = new FlowPane(10,10);
 		FlowPane NewAccPane = new FlowPane(10,10);
-		
+		FIITNotes.setResizable(false);
 		LogPane.setId("MainCenter");
 		NewAccPane.setId("MainCenter");
 		

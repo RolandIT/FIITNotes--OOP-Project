@@ -76,6 +76,10 @@ public class User implements Serializable{
 	public void applyPrivileges() {
 	}
 	
+	public String getType() {
+		return "User";
+	}
+	
 	//returns the users ID
 	public int getID() {	
 		return ID;

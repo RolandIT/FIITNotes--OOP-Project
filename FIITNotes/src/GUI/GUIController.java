@@ -15,9 +15,11 @@ import Subjects.Document;
 import Subjects.NewFollowedSubj;
 import Subjects.NewSubjectListener;
 import Subjects.Subject;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -105,14 +107,12 @@ public class GUIController {
 	}
 	
 	//TODO
-	public ArrayList<Button> addNewSubjectListener(Pane pn,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes,ArrayList<Pane>subjpns) {
+	public void addNewSubjectListener(Pane pn,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes,ArrayList<Pane>subjpns) {
 		//observer pattern - listener added to new subject listeners 
-		main.SHandler.addListener(new NewSubjectListener() {
-		//Anonymous class with onNewSubject method implemented
-		//onNewSubject adds a new button to the center Pane each 
+		main.SHandler.addListener(()-> {
+		//lambda expression which inserts code to the onNewSubject method 
+		//adds a new button to the center Pane each 
 		//time its called by the Handler
-		@Override
-		public void onNewSubject() {
 			Button btn = new Button(main.subjects.get((main.subjects.size())-1).getSubjName());
 			btn.setMinHeight(150);
 			btn.setMinWidth(150);
@@ -134,10 +134,7 @@ public class GUIController {
 				for(Pane pns:subjpns)
 					pn.getChildren().add(pns);
 			});
-										
-			}
 		});
-		return btns;
 	}
 	
 	//TODO
@@ -156,7 +153,7 @@ public class GUIController {
 	}
 	
 	//TODO
-	public ArrayList<Button> addNewFollowedSubjListener(Pane pn,Pane actionPane,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes){
+	public void addNewFollowedSubjListener(Pane pn,Pane actionPane,ArrayList<Button> btns,ArrayList<Node> stdNodes,ArrayList<Node>instNodes,ArrayList<Pane> subjpns){
 		//observer pattern - listener added to newFollowedSubject listeners
 		main.SHandler.addListener(new NewFollowedSubj() {
 			//Anonymous class with onNewFollowed method implemented
@@ -183,10 +180,12 @@ public class GUIController {
 						for(Node nd:instNodes)
 							actionPane.getChildren().add(nd);
 					}
+					
+					for(Pane pns:subjpns)
+						actionPane.getChildren().add(pns);
 				});
 			}
 		});
-		return btns;
 	}
 	
 	//TODO

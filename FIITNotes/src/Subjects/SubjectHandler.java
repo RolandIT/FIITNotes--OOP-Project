@@ -11,8 +11,8 @@ import Users.User;
 
 public class SubjectHandler {
 	private ArrayList<Subject> subjects = new ArrayList<Subject>();
-	private ArrayList<NewSubjectListener> listeners = new ArrayList<NewSubjectListener>();
-	private ArrayList<NewFollowedSubj> followListeners = new ArrayList<NewFollowedSubj>();
+	private NewSubjectListener listener;
+	private NewFollowedSubj followListener;
 	private Subject currentSubject;
 	
 	//finds all the subjects in /Subjects/ folder and adds them
@@ -49,9 +49,9 @@ public class SubjectHandler {
 			e.printStackTrace();
 		}
 		subjects.add(newSubj);
-		for(NewSubjectListener listener: listeners) {
-			listener.onNewSubject(); //call on new subject method for each listener
-		}
+			
+		listener.onNewSubject(); //call on new subject method for the listener
+		
 		File dir = new File("Documents/"+subjName);
 		dir.mkdir();
 		return true;
@@ -68,11 +68,8 @@ public class SubjectHandler {
 	public void newFollowHandler(User currentUser,Subject subject) throws IOException {
 		
 		if(currentUser.followSubject(subject))
-		{
-			for(NewFollowedSubj listener: followListeners) {
-				listener.onNewFollowed(subject);//call the onNewFollowed for each listener 
-			}
-		}
+				followListener.onNewFollowed(subject);//call the onNewFollowed for the listener 
+			
 		currentUser.saveUser();
 	}
 	
@@ -81,16 +78,16 @@ public class SubjectHandler {
 		return subjects;
 	}
 	
-	//adds a new listener to new subject listeners
-	public void addListener(NewSubjectListener listener)
+	//adds a new listener 
+	public void addListener(NewSubjectListener e)
 	{
-		listeners.add(listener);
+		listener=e;
 	}
 	
-	//adds a new listener to followListeners 
-	public void addListener(NewFollowedSubj listener)
+	//adds a new listener 
+	public void addListener(NewFollowedSubj e)
 	{
-		followListeners.add(listener);
+		followListener = e;
 	}
 	
 	//set the current subject; accepts (string) subject name 

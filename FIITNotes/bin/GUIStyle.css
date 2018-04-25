@@ -31,3 +31,8 @@
 	-fx-text-fill: #000000;
 	-fx-font-family: "Comic Sans MS";
 }
+#red{
+	-fx-font-size: 10pt;
+	-fx-text-fill: #ef0404;
+	-fx-font-family: "Comic Sans MS";
+}

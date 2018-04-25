@@ -57,7 +57,7 @@ public class LoginGUI extends Application{
 		LogPane.getChildren().add(login);
 		LogPane.getChildren().add(newAcc);
 		LogPane.getChildren().add(loginFail);
-		loginFail.setTextFill(Color.RED);
+		loginFail.setId("red");
 		
 		//new account nodes added 
 		NewAccPane.getChildren().add(newName);
@@ -69,7 +69,8 @@ public class LoginGUI extends Application{
 		NewAccPane.getChildren().add(errMess);
 		NewAccPane.getChildren().add(rbS);
 		NewAccPane.getChildren().add(rbI);
-		errMess.setTextFill(Color.RED);
+		errMess.setId("red");
+		
 		rbS.setToggleGroup(rbgroup);
 		rbS.setUserData(new String("Student"));
 		rbI.setUserData(new String("Instructor"));

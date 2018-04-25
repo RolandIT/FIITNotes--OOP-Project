@@ -56,13 +56,17 @@ public class MainGUI extends Application{
 		FlowPane MainTop = new FlowPane();
 		VBox CenterLeft=new VBox();
 		GridPane CenterRight = new GridPane();
+		ScrollPane MainCenterScroll = new ScrollPane();
 		
 		MainPane.setTop(MainTop);
 		MainPane.setLeft(MainLeft);         
-		MainPane.setCenter(MainCenter);
+		MainPane.setCenter(MainCenterScroll);
 		MainPane.setRight(MainRight);
 		
 		//Panel Nodes
+		MainCenterScroll.setContent(MainCenter);
+		MainCenterScroll.setFitToHeight(true);
+		MainCenterScroll.setFitToWidth(true);
 		
 		//Right panel nodes added only if the current user is of type Instructor
 		MainRight.add(addNewSubject,0,0);
@@ -70,7 +74,7 @@ public class MainGUI extends Application{
 		MainRight.add(newSubNameT,0,2);
 		MainRight.add(errMess, 0, 3);
 		controller.setUserScene(MainRight,FIITNotes);
-		errMess.setTextFill(Color.RED);
+		errMess.setId("red");
 		
 		//Left panel
 		MainLeft.getChildren().add(followedLab);
@@ -102,7 +106,7 @@ public class MainGUI extends Application{
 		}
 		
 		//Layout settings
-		MainTop.setHgap(650);
+		MainTop.setHgap(660);
 		
 		GridPane.setMargin(addNewSubject, new Insets(15, 0, 0, 0));
 		GridPane.setHalignment(addNewSubject, HPos.CENTER);
@@ -131,7 +135,7 @@ public class MainGUI extends Application{
 		MainTop.setId("MainTop");
 		
 		//Scene settings
-		Scene MainWindow = new Scene(MainPane,880,500);
+		Scene MainWindow = new Scene(MainPane,890,500);
 		MainWindow.getStylesheets().add("GUIStyle.css");
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.show();
@@ -144,14 +148,15 @@ public class MainGUI extends Application{
 		instructorNodes.add(removeSubj);
 		
 		ArrayList<Pane> subjectPanes=new ArrayList<Pane>();
-		subjectPanes.add(CenterRight);
 		subjectPanes.add(CenterLeft);
+		subjectPanes.add(CenterRight);
+		
 		
 		//Adds listeners for new subjects creation 
 		CenterLeft.getChildren().clear();
 		CenterLeft.getChildren().add(documentsL);
 		controller.addNewSubjectListener(MainCenter,subjButtons,studentNodes,instructorNodes,subjectPanes);
-		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,studentNodes,instructorNodes);
+		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,studentNodes,instructorNodes,subjectPanes);
 		
 		//Button action 
 		//change the center pane when a subject button is clicked
@@ -197,6 +202,8 @@ public class MainGUI extends Application{
 			for(Button btn : subjButtons) {
 				MainCenter.getChildren().add(btn);
 			}
+			CenterLeft.getChildren().clear();
+			CenterLeft.getChildren().add(documentsL);
 		});
 		
 		//delete the current instance of main 

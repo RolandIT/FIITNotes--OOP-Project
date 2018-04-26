@@ -6,11 +6,6 @@ import java.util.ArrayList;
 public class DocumentHandler {
 	public ArrayList<Document> currentSubjDocuments = new ArrayList<Document>();
 	
-	//TODO
-	public void addDocument(File docFile,String folder,String docName) {
-		//currentSubjDocuments.add(new Document(docFile,folder,docName));
-	}
-	
 	//TODO 
 	public void discoverDocuments(String folder) {
 		File[] docFiles = new File("Documents/"+folder).listFiles();

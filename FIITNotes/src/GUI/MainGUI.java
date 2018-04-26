@@ -11,7 +11,6 @@ import javafx.stage.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 import CustomExceptions.IllegalArgException;
@@ -40,7 +39,14 @@ public class MainGUI extends Application{
 	private Label newDocumentL = new Label("Document name");
 	private Label documentsL = new Label("List of all documents");
 	private Button unfollowSubj = new Button ("Unfollow");
-	private Label errMessDoc=new Label();
+	private Label errMessDoc = new Label();
+	private Button comments = new Button("Comments");
+	
+	//nodes on the comment pane 
+	private Button backBN = new Button("Back");
+	private TextField comment = new TextField();
+	private Button send = new Button("Send");
+	private Label commentsL = new Label("Comments :");
 	
 	//Constructor for the main GUI, MainInstance object main is passed down on
 	//creation so current instance information is accessible 
@@ -62,6 +68,9 @@ public class MainGUI extends Application{
 		GridPane CenterRight = new GridPane();
 		ScrollPane MainCenterScroll = new ScrollPane();
 		HBox CenterControls = new HBox();
+		HBox CommentsControls = new HBox();
+		HBox NewComment = new HBox();
+		VBox AllComments = new VBox();
 		
 		MainPane.setTop(MainTop);
 		MainPane.setLeft(MainLeft);         
@@ -123,6 +132,9 @@ public class MainGUI extends Application{
 		MainLeft.setSpacing(10);
 		MainLeft.setAlignment(Pos.TOP_CENTER);
 		
+		CenterLeft.setAlignment(Pos.TOP_CENTER);
+		CenterLeft.setSpacing(10);
+		
 		
 		MainCenter.setPadding(new Insets(35, 35, 35, 35)); 
 		MainCenter.setHgap(35);
@@ -135,7 +147,16 @@ public class MainGUI extends Application{
 		CenterControls.setSpacing(45);
 		CenterControls.setMinWidth(700);
 		CenterControls.setAlignment(Pos.TOP_CENTER);
+		CommentsControls.setAlignment(Pos.TOP_RIGHT);
+		CommentsControls.setSpacing(260);
+		CommentsControls.setMinWidth(700);
+		NewComment.setAlignment(Pos.BOTTOM_CENTER);
+		NewComment.setSpacing(45);
+		NewComment.setMinWidth(700);
 		
+		AllComments.setSpacing(20);
+		AllComments.setMinWidth(700);
+		AllComments.setAlignment(Pos.CENTER_LEFT);
 		//Style settings 
 		newDocumentL.setId("documentL");
 		documentsL.setId("documentL");
@@ -144,6 +165,7 @@ public class MainGUI extends Application{
 		MainLeft.setId("MainLeft");
 		MainRight.setId("MainRight");
 		MainTop.setId("MainTop");
+		commentsL.setId("documentL");
 		
 		//Scene settings
 		Scene MainWindow = new Scene(MainPane,890,500);
@@ -155,11 +177,23 @@ public class MainGUI extends Application{
 		controlNodes.add(followSubj);
 		controlNodes.add(backB);
 		controlNodes.add(unfollowSubj);
-			
+		controlNodes.add(comments);
+		
+		CommentsControls.getChildren().add(commentsL);
+		CommentsControls.getChildren().add(backBN);
+		NewComment.getChildren().add(comment);
+		NewComment.getChildren().add(send);
+		
 		ArrayList<Pane> subjectPanes=new ArrayList<Pane>();
 		subjectPanes.add(CenterLeft);
 		subjectPanes.add(CenterRight);
 		
+		
+		backBN.setMinHeight(10);
+		backBN.setMinWidth(100);
+		send.setMinHeight(10);
+		send.setMinWidth(100);
+		comment.setMinWidth(300);
 		
 		//Adds listeners for new subjects creation 
 		CenterLeft.getChildren().clear();
@@ -277,22 +311,50 @@ public class MainGUI extends Application{
 		
 		unfollowSubj.setOnAction(x->{
 			controller.removeFollow(followedSubjButtons);
-			
-			
-			//does the same as the back button 
-			MainCenter.getChildren().clear();
-			for(Button btn : subjButtons) {
-				MainCenter.getChildren().add(btn);
-			}
-			CenterLeft.getChildren().clear();
-			CenterLeft.getChildren().add(documentsL);
-			controller.setRight(MainPane,MainRight);
-			
 			MainLeft.getChildren().clear();
 			MainLeft.getChildren().add(followedLab);
 			for(Button btn : followedSubjButtons) {
 				MainLeft.getChildren().add(btn);
 			}
+		});
+		
+		//TODO
+		backBN.setOnAction(e->{
+			MainCenter.getChildren().clear();
+			CenterLeft.getChildren().clear();
+			CenterLeft.getChildren().add(documentsL);
+			MainCenter.getChildren().add(CenterControls);
+			MainCenter.getChildren().add(CenterLeft);
+			MainCenter.getChildren().add(CenterRight);
+			controller.addAllDocuments(CenterLeft);
+		});
+		
+		//TODO
+		comments.setOnAction(e->{
+			MainCenter.getChildren().clear();
+			try {
+				controller.addComments(AllComments);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			MainCenter.getChildren().add(CommentsControls);
+			MainCenter.getChildren().add(NewComment);
+			MainCenter.getChildren().add(AllComments);
+		});
+		
+		//TODO
+		send.setOnAction(e->{
+			try {
+				controller.addNewComment(comment.getText());
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			}
+			try {
+				controller.addComments(AllComments);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			comment.setText("");
 		});
 }
 

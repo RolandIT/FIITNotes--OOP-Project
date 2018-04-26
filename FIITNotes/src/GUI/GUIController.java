@@ -1,11 +1,13 @@
 package GUI;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,8 +15,11 @@ import java.util.ArrayList;
 
 import CustomExceptions.IllegalArgException;
 import Main.MainInstance;
+import Subjects.Comment;
 import Subjects.Document;
 import Subjects.NewFollowedSubj;
+import Subjects.PriviledgedComment;
+import Subjects.RegularComment;
 import Subjects.Subject;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -23,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -277,9 +283,7 @@ public class GUIController {
 			File source = fileChooser.showOpenDialog(stg);
 			if(source!=null)
 			{
-				File destination = new File("Documents/" + folder + "/"+docName + "." + fileOperations.getFileExtension(source));
 				fileOperations.copyFile(new FileInputStream(source),Paths.get("Documents/" + folder + "/" + docName + "." + fileOperations.getFileExtension(source)));
-				main.DHandler.addDocument(destination,folder, docName);
 			}
 		}
 	}
@@ -309,5 +313,41 @@ public class GUIController {
 	public void setRight(BorderPane pn,Pane vb) {
 		if(main.UHandler.getCurrentUser().getType().equals("Instructor"))
 			pn.setRight(vb);
+	}
+	
+	//TODO
+	public void addComments(VBox vb) throws IOException {
+		BufferedReader reader;
+		reader = new BufferedReader(new FileReader("Comments/"+main.SHandler.getCurrentSubject().getSubjName()+".txt"));
+		vb.getChildren().clear();
+		String comment=reader.readLine();
+		while(comment!=null)
+		{
+			Label lb = new Label(comment);
+			comment=reader.readLine();
+			if(comment.equals("1"))
+				lb.setId("owner");
+			vb.getChildren().add(lb);
+			comment=reader.readLine();
+		}
+		reader.close();	
+	}
+
+	//TODO
+	public void addNewComment(String text) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("Comments/"+main.SHandler.getCurrentSubject().getSubjName()+".txt",true));
+		Comment c1;
+		if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
+			c1 = new PriviledgedComment(main.UHandler.getCurrentUser().getName(),text);
+		else
+			c1 = new RegularComment(main.UHandler.getCurrentUser().getName(),text);
+		writer.write(main.UHandler.getCurrentUser().getName()+" : "+text);
+		writer.newLine();
+		String priviledge="";
+		priviledge=c1.applyPriviledges(priviledge);
+		writer.write(priviledge);
+		writer.newLine();
+		
+		writer.close();
 	}
 }

@@ -2,13 +2,14 @@ package Subjects;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import CustomExceptions.IllegalArgException;
 import Users.User;
-
 
 public class SubjectHandler {
 	private ArrayList<Subject> subjects = new ArrayList<Subject>();
@@ -55,6 +56,14 @@ public class SubjectHandler {
 		
 		File dir = new File("Documents/"+subjName);
 		dir.mkdir();
+		try {
+			@SuppressWarnings({ "unused", "resource" })
+			PrintWriter writer = new PrintWriter("Comments/"+subjName+".txt", "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 	public void removeCurrentSubject()

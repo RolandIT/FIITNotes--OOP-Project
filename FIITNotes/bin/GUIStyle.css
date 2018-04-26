@@ -36,3 +36,8 @@
 	-fx-text-fill: #f20423;
 	-fx-font-family: "Comic Sans MS";
 }
+#owner{
+	-fx-font-size: 15pt;
+	-fx-text-fill: #e2a50b;
+	-fx-font-family: "Comic Sans MS";
+}

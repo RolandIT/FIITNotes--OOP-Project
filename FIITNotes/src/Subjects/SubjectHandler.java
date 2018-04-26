@@ -77,7 +77,7 @@ public class SubjectHandler {
 	public ArrayList<Subject> getSubjects(){
 		return subjects;
 	}
-	
+		
 	//adds a new listener 
 	public void addListener(NewSubjectListener e)
 	{

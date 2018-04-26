@@ -60,7 +60,7 @@ public class UserHandler {
 		return true;
 	}
 	
-	public void removeFollowedHandler(Subject s)
+	public void removeAllFollowedHandler(Subject s)
 	{
 		for(User u:allUsers)
 		{
@@ -71,6 +71,17 @@ public class UserHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void removeFollowedHandler(Subject s)
+	{
+			currentUser.removeFollowedSubject(s);
+			try {
+				currentUser.saveUser();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
 	}
 	
 	//returns the current user

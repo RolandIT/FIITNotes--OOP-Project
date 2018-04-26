@@ -13,17 +13,14 @@ import java.util.ArrayList;
 import Main.MainInstance;
 import Subjects.Document;
 import Subjects.NewFollowedSubj;
-import Subjects.NewSubjectListener;
 import Subjects.Subject;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Labeled;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -110,7 +107,7 @@ public class GUIController {
 	}
 	
 	//TODO
-	public void addNewSubjectListener(Pane pn,ArrayList<Button> btns,HBox controls,ArrayList<Node>instNodes,ArrayList<Pane>subjpns) {
+	public void addNewSubjectListener(Pane pn,ArrayList<Button> btns,HBox controls,ArrayList<Node> controlnd,Button removeSubj,ArrayList<Pane>subjpns) {
 		//observer pattern - listener added to new subject listeners 
 		main.SHandler.addListener(()-> {
 		//lambda expression which inserts code to the onNewSubject method 
@@ -127,35 +124,42 @@ public class GUIController {
 				main.SHandler.setCurrentSubject(btn.getText());
 				pn.getChildren().clear();
 				pn.getChildren().add(controls);
-					
+			
+				controls.getChildren().clear();
+				for(Node nd:controlnd)
+					controls.getChildren().add(nd);
+				
 				//remove subject button only added if the use is the owner of the subject
 				if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-				{
-					for(Node nd:instNodes)
-					controls.getChildren().add(nd);
-				}
+					controls.getChildren().add(removeSubj);
+				
 				for(Pane pns:subjpns)
 					pn.getChildren().add(pns);
+				
+				GUIController c1 = new GUIController();
+				c1.main.SHandler.setCurrentSubject(btn.getText()); //adds the current subject to the temporary controller
+				c1.addAllDocuments(subjpns.get(0));
 			});
 		});
 	}
 	
 	//TODO
-	public void setSubjButtonAction(Pane pn,HBox controls,ArrayList<Node> instNodes,String subj) {
+	public void setSubjButtonAction(Pane pn,HBox controls,ArrayList<Node> controlnd,Button removeSubj,String subj) {
 		main.SHandler.setCurrentSubject(subj);
 		pn.getChildren().clear();
 		pn.getChildren().add(controls);
-			
+		
+		controls.getChildren().clear();
+		for(Node nd:controlnd)
+			controls.getChildren().add(nd);
+
 		//remove subject button only added if the use is the owner of the subject
 		if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-		{
-			for(Node nd:instNodes)
-			controls.getChildren().add(nd);
-		}
+			controls.getChildren().add(removeSubj);
 	}
 	
 	//TODO
-	public void addNewFollowedSubjListener(Pane pn,Pane actionPane,ArrayList<Button> btns,HBox controls,ArrayList<Node>instNodes,ArrayList<Pane> subjpns){
+	public void addNewFollowedSubjListener(Pane pn,Pane actionPane,ArrayList<Button> btns,HBox controls,ArrayList<Node> controlnd,Button removeSubj,ArrayList<Pane> subjpns,Label documentsL){
 		//observer pattern - listener added to newFollowedSubject listeners
 		main.SHandler.addListener(new NewFollowedSubj() {
 			//Anonymous class with onNewFollowed method implemented
@@ -175,19 +179,24 @@ public class GUIController {
 					main.SHandler.setCurrentSubject(subject.getSubjName());
 					actionPane.getChildren().clear();
 					actionPane.getChildren().add(controls);
-						
+					
+					controls.getChildren().clear();
+					for(Node nd:controlnd)
+						controls.getChildren().add(nd);
+					
 					//remove subject button only added if the use is the owner of the subject
 					if((main.SHandler.getCurrentSubject().getOwnerID())==(main.UHandler.getCurrentUser().getID()))
-					{
-						for(Node nd:instNodes)
-							controls.getChildren().add(nd);
-					}
+							controls.getChildren().add(removeSubj);
+					
 					
 					for(Pane pns:subjpns)
 						actionPane.getChildren().add(pns);
 					
 					GUIController c1 = new GUIController();
 					c1.main.SHandler.setCurrentSubject(subject.getSubjName()); //adds the current subject to the temporary controller
+					
+					subjpns.get(0).getChildren().clear();
+					subjpns.get(0).getChildren().add(documentsL);
 					c1.addAllDocuments(subjpns.get(0));
 				});
 			}
@@ -219,8 +228,21 @@ public class GUIController {
 		followedSubjButtons.removeAll(toRemove);
 		toRemove.clear();
 		
-		main.UHandler.removeFollowedHandler(main.SHandler.getCurrentSubject());
+		main.UHandler.removeAllFollowedHandler(main.SHandler.getCurrentSubject());
 		main.SHandler.removeCurrentSubject();
+	}
+	
+	//TODO 
+	public void removeFollow(ArrayList<Button> followedSubj) {
+		ArrayList<Button> toRemove = new ArrayList<Button>();
+		for(Button btn : followedSubj) {
+			if(btn.getText().equals(main.SHandler.getCurrentSubject().getSubjName()))
+				toRemove.add(btn);
+		}
+		followedSubj.removeAll(toRemove);
+		
+		main.UHandler.removeFollowedHandler(main.SHandler.getCurrentSubject());
+		main.SHandler.setCurrentSubject(null);
 	}
 	
 	//TODO
@@ -250,7 +272,6 @@ public class GUIController {
 	//TODO
 	public void addAllDocuments(Pane pn) {
 			ArrayList<Document> docs=new ArrayList<Document>();
-			System.out.println(main.SHandler.getCurrentSubject().getSubjName());
 			main.DHandler.discoverDocuments(main.SHandler.getCurrentSubject().getSubjName());
 			docs = main.DHandler.getDocuments();
 			

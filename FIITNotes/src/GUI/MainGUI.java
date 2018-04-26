@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.*;
 
 import java.io.FileNotFoundException;
@@ -146,15 +145,11 @@ public class MainGUI extends Application{
 		FIITNotes.setScene(MainWindow);
 		FIITNotes.show();
 		
-	
-		CenterControls.getChildren().add(followSubj);
-		CenterControls.getChildren().add(backB);
-		CenterControls.getChildren().add(unfollowSubj);
-		
-		
-		ArrayList<Node> instructorNodes=new ArrayList<Node>();
-		instructorNodes.add(removeSubj);
-		
+		ArrayList<Node> controlNodes=new ArrayList<Node>();
+		controlNodes.add(followSubj);
+		controlNodes.add(backB);
+		controlNodes.add(unfollowSubj);
+			
 		ArrayList<Pane> subjectPanes=new ArrayList<Pane>();
 		subjectPanes.add(CenterLeft);
 		subjectPanes.add(CenterRight);
@@ -163,15 +158,15 @@ public class MainGUI extends Application{
 		//Adds listeners for new subjects creation 
 		CenterLeft.getChildren().clear();
 		CenterLeft.getChildren().add(documentsL);
-		controller.addNewSubjectListener(MainCenter,subjButtons,CenterControls,instructorNodes,subjectPanes);
-		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,CenterControls,instructorNodes,subjectPanes);
+		controller.addNewSubjectListener(MainCenter,subjButtons,CenterControls,controlNodes,removeSubj,subjectPanes);
+		controller.addNewFollowedSubjListener(MainLeft,MainCenter,followedSubjButtons,CenterControls,controlNodes,removeSubj,subjectPanes,documentsL);
 		
 		//Button action 
 		//change the center pane when a subject button is clicked
 		//according to the subject it belongs to 
 		for(Button btn : subjButtons) {
 			btn.setOnAction(e->{
-				controller.setSubjButtonAction(MainCenter,CenterControls,instructorNodes,btn.getText());
+				controller.setSubjButtonAction(MainCenter,CenterControls,controlNodes,removeSubj,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
 				CenterLeft.getChildren().clear();
 				CenterLeft.getChildren().add(documentsL);
@@ -186,7 +181,7 @@ public class MainGUI extends Application{
 		//according to the subject it belongs to
 		for(Button btn : followedSubjButtons) {
 			btn.setOnAction(e->{
-				controller.setSubjButtonAction(MainCenter,CenterControls,instructorNodes,btn.getText());
+				controller.setSubjButtonAction(MainCenter,CenterControls,controlNodes,removeSubj,btn.getText());
 				controller.main.SHandler.setCurrentSubject(btn.getText());
 				CenterLeft.getChildren().clear();
 				CenterLeft.getChildren().add(documentsL);
@@ -216,11 +211,6 @@ public class MainGUI extends Application{
 			CenterLeft.getChildren().clear();
 			CenterLeft.getChildren().add(documentsL);
 			controller.setRight(MainPane,MainRight);
-			CenterControls.getChildren().clear();
-			CenterControls.getChildren().add(followSubj);
-			CenterControls.getChildren().add(backB);
-			CenterControls.getChildren().add(unfollowSubj);
-			
 		});
 		
 		//delete the current instance of main 
@@ -235,8 +225,8 @@ public class MainGUI extends Application{
 		//clear the new subject panel if the subject handler 
 		//returns true , display error message if false 
 		addNewSubject.setOnAction(e->{
-				errMess.setText(controller.setAddNewSubjectButton(newSubNameT.getText()));	
-				newSubNameT.clear();
+			errMess.setText(controller.setAddNewSubjectButton(newSubNameT.getText()));	
+			newSubNameT.clear();
 		});
 		
 		//TODO
@@ -246,10 +236,6 @@ public class MainGUI extends Application{
 			MainLeft.getChildren().clear();
 			MainLeft.getChildren().add(followedLab);
 			MainCenter.getChildren().clear();
-			CenterControls.getChildren().clear();
-			CenterControls.getChildren().add(followSubj);
-			CenterControls.getChildren().add(backB);
-			CenterControls.getChildren().add(unfollowSubj);
 			controller.setRight(MainPane,MainRight);
 			for(Button btn : subjButtons) {
 				MainCenter.getChildren().add(btn);
@@ -273,6 +259,26 @@ public class MainGUI extends Application{
 			CenterLeft.getChildren().clear();
 			CenterLeft.getChildren().add(documentsL);
 			controller.addAllDocuments(CenterLeft);
+		});
+		
+		unfollowSubj.setOnAction(x->{
+			controller.removeFollow(followedSubjButtons);
+			
+			
+			//does the same as the back button 
+			MainCenter.getChildren().clear();
+			for(Button btn : subjButtons) {
+				MainCenter.getChildren().add(btn);
+			}
+			CenterLeft.getChildren().clear();
+			CenterLeft.getChildren().add(documentsL);
+			controller.setRight(MainPane,MainRight);
+			
+			MainLeft.getChildren().clear();
+			MainLeft.getChildren().add(followedLab);
+			for(Button btn : followedSubjButtons) {
+				MainLeft.getChildren().add(btn);
+			}
 		});
 }
 

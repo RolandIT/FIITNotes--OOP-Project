@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import CustomExceptions.IllegalArgException;
 import Main.MainInstance;
 import Subjects.Document;
 import Subjects.NewFollowedSubj;
@@ -204,12 +206,17 @@ public class GUIController {
 	}
 	
 	//TODO
-	public String setAddNewSubjectButton(String subjName) {
-		if(main.SHandler.newSubjectHandle(subjName,main.UHandler.getCurrentUser().getID()))
+	public String setAddNewSubjectButton(String subjName,Label lb) throws IllegalArgException {
+		if(subjName.equals(""))
+			throw new IllegalArgException(lb,"Subject name not allowed");
+		else
 		{
-			return " ";
+			if(main.SHandler.newSubjectHandle(subjName,main.UHandler.getCurrentUser().getID()))
+			{
+				return " ";
+			}
+			return "Subject already exists!";
 		}
-		return "Subject already exists!";
 	}
 	
 	//TODO
@@ -260,13 +267,21 @@ public class GUIController {
 	}
 	
 	//TODO
-	public void addNewDocument(String docName,Stage stg) throws FileNotFoundException, IOException {
-		String folder = main.SHandler.getCurrentSubject().getSubjName();
-		FileChooser fileChooser = new FileChooser();
-		File source = fileChooser.showOpenDialog(stg);
-		File destination = new File("Documents/" + folder + "/"+docName + "." + fileOperations.getFileExtension(source));
-	    fileOperations.copyFile(new FileInputStream(source),Paths.get("Documents/" + folder + "/" + docName + "." + fileOperations.getFileExtension(source)));
-        main.DHandler.addDocument(destination,folder, docName);
+	public void addNewDocument(String docName,Stage stg,Label lb) throws IOException,IllegalArgException{
+		if(docName.equals(""))
+			throw new IllegalArgException(lb,"Document name not allowed");
+		else
+		{
+			String folder = main.SHandler.getCurrentSubject().getSubjName();
+			FileChooser fileChooser = new FileChooser();
+			File source = fileChooser.showOpenDialog(stg);
+			if(source!=null)
+			{
+				File destination = new File("Documents/" + folder + "/"+docName + "." + fileOperations.getFileExtension(source));
+				fileOperations.copyFile(new FileInputStream(source),Paths.get("Documents/" + folder + "/" + docName + "." + fileOperations.getFileExtension(source)));
+				main.DHandler.addDocument(destination,folder, docName);
+			}
+		}
 	}
 	
 	//TODO

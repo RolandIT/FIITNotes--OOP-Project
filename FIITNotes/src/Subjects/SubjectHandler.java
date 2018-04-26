@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import CustomExceptions.IllegalArgException;
 import Users.User;
 
 
@@ -36,7 +37,7 @@ public class SubjectHandler {
 	}
 	
 	//handles new subject creation request 
-	public boolean newSubjectHandle(String subjName,int ownerID) {
+	public boolean newSubjectHandle(String subjName,int ownerID){
 		Subject newSubj=new Subject(subjName,ownerID);
 		for(Subject s:subjects)
 		{

@@ -11,7 +11,10 @@ import javafx.stage.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
+
+import CustomExceptions.IllegalArgException;
 
 public class MainGUI extends Application{	
 	//controller
@@ -37,6 +40,7 @@ public class MainGUI extends Application{
 	private Label newDocumentL = new Label("Document name");
 	private Label documentsL = new Label("List of all documents");
 	private Button unfollowSubj = new Button ("Unfollow");
+	private Label errMessDoc=new Label();
 	
 	//Constructor for the main GUI, MainInstance object main is passed down on
 	//creation so current instance information is accessible 
@@ -76,6 +80,7 @@ public class MainGUI extends Application{
 		MainRight.add(errMess, 0, 3);
 		controller.setUserScene(MainPane,FIITNotes);
 		errMess.setId("red");
+		errMessDoc.setId("red");
 		
 		//Left panel
 		MainLeft.getChildren().add(followedLab);
@@ -94,6 +99,7 @@ public class MainGUI extends Application{
 		CenterRight.add(newDocumentL,0,0);
 		CenterRight.add(newDocumentName,0,1);
 		CenterRight.add(addDocument,0,2);
+		CenterRight.add(errMessDoc,0,3);
 		
 		GridPane.setHalignment(newDocumentL, HPos.CENTER);
 		GridPane.setHalignment(addDocument, HPos.CENTER);
@@ -211,6 +217,8 @@ public class MainGUI extends Application{
 			CenterLeft.getChildren().clear();
 			CenterLeft.getChildren().add(documentsL);
 			controller.setRight(MainPane,MainRight);
+			errMess.setText("");
+			errMessDoc.setText("");
 		});
 		
 		//delete the current instance of main 
@@ -225,7 +233,11 @@ public class MainGUI extends Application{
 		//clear the new subject panel if the subject handler 
 		//returns true , display error message if false 
 		addNewSubject.setOnAction(e->{
-			errMess.setText(controller.setAddNewSubjectButton(newSubNameT.getText()));	
+			try {
+				errMess.setText(controller.setAddNewSubjectButton(newSubNameT.getText(),errMess));
+			} catch (IllegalArgException e1) {
+				
+			}	
 			newSubNameT.clear();
 		});
 		
@@ -249,16 +261,18 @@ public class MainGUI extends Application{
 		//TODO
 		addDocument.setOnAction(e->{
 			try {
-				controller.addNewDocument(newDocumentName.getText(),FIITNotes);
+				controller.addNewDocument(newDocumentName.getText(),FIITNotes,errMessDoc);
+				newDocumentName.clear();
+				CenterLeft.getChildren().clear();
+				CenterLeft.getChildren().add(documentsL);
+				controller.addAllDocuments(CenterLeft);
+				errMessDoc.setText("");
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				errMessDoc.setText("File name already used!");
+			} catch (IllegalArgException e1) {	
 			}
-			newDocumentName.clear();
-			CenterLeft.getChildren().clear();
-			CenterLeft.getChildren().add(documentsL);
-			controller.addAllDocuments(CenterLeft);
 		});
 		
 		unfollowSubj.setOnAction(x->{

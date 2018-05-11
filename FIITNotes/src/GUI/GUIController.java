@@ -17,7 +17,7 @@ import CustomExceptions.IllegalArgException;
 import Main.MainInstance;
 import Subjects.Comment;
 import Subjects.Document;
-import Subjects.NewFollowedSubj;
+import Subjects.NewSubjectListener;
 import Subjects.PriviledgedComment;
 import Subjects.RegularComment;
 import Subjects.Subject;
@@ -169,7 +169,7 @@ public class GUIController {
 	//TODO
 	public void addNewFollowedSubjListener(Pane pn,Pane actionPane,ArrayList<Button> btns,HBox controls,ArrayList<Node> controlnd,Button removeSubj,ArrayList<Pane> subjpns,Label documentsL){
 		//observer pattern - listener added to newFollowedSubject listeners
-		main.SHandler.addListener(new NewFollowedSubj() {
+		main.SHandler.addListener(new NewSubjectListener.NewFollowedListener() {
 			//Anonymous class with onNewFollowed method implemented
 			//onNewFollowed adds a new button to the left Pane each 
 			//time its called by the Handler

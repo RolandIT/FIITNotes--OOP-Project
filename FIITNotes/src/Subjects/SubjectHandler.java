@@ -14,7 +14,7 @@ import Users.User;
 public class SubjectHandler {
 	private ArrayList<Subject> subjects = new ArrayList<Subject>();
 	private NewSubjectListener listener;
-	private NewFollowedSubj followListener;
+	private NewSubjectListener.NewFollowedListener followListener;
 	private Subject currentSubject;
 	
 	//finds all the subjects in /Subjects/ folder and adds them
@@ -95,7 +95,7 @@ public class SubjectHandler {
 	}
 	
 	//adds a new listener 
-	public void addListener(NewFollowedSubj e)
+	public void addListener(NewSubjectListener.NewFollowedListener e)
 	{
 		followListener = e;
 	}

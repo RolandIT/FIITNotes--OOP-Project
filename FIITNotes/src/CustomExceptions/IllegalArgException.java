@@ -8,5 +8,9 @@ public class IllegalArgException extends Throwable{
 	public IllegalArgException(Label lb,String msg) {
 		lb.setText(msg);
 	}
+	
+	public  void printErrMess() {
+		System.out.println("Illegal arg entered!");
+	}
 
 }

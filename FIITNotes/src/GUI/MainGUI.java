@@ -306,6 +306,7 @@ public class MainGUI extends Application{
 			} catch (IOException e1) {
 				errMessDoc.setText("File name already used!");
 			} catch (IllegalArgException e1) {	
+				e1.printErrMess();
 			}
 		});
 		

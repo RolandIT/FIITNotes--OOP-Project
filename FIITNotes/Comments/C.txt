@@ -1,0 +1,6 @@
+ucitel : Pridávajte sem iba materiály k jazyku C
+1
+zlystudent : Ja pridám aj C++ materiál!
+0
+student2 : komentar
+0

@@ -1,0 +1,43 @@
+.hyperlink{
+    -fx-font-size: 16pt;
+    -fx-font-family: "Comic Sans MS";
+    -fx-text-fill: #000000;
+}
+#MainCenter{
+	-fx-background-color: #6b7577;
+}
+#MainRight{
+	-fx-background-color: #b0b8ba;
+}
+#MainLeft{
+	-fx-background-color: #b0b8ba;
+}
+#MainTop{
+	-fx-background-color: #b0b8ba;
+}
+#documentL{
+    -fx-font-size: 18pt;
+    -fx-font-family: "Comic Sans MS";
+    -fx-text-fill: #000000;
+}
+.button{
+	-fx-background-color: #f7f9f9;
+	-fx-font-size: 10pt;
+	-fx-text-fill: #000000;
+	-fx-font-family: "Comic Sans MS";
+}
+.label{
+	-fx-font-size: 10pt;
+	-fx-text-fill: #000000;
+	-fx-font-family: "Comic Sans MS";
+}
+#red{
+	-fx-font-size: 10pt;
+	-fx-text-fill: #f20423;
+	-fx-font-family: "Comic Sans MS";
+}
+#owner{
+	-fx-font-size: 15pt;
+	-fx-text-fill: #e2a50b;
+	-fx-font-family: "Comic Sans MS";
+}

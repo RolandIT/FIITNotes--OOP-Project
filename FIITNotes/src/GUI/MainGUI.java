@@ -14,7 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import CustomExceptions.IllegalArgException;
-
+/**
+ * Main GUI class
+ * @author Roli
+ *
+ */
 public class MainGUI extends Application{	
 	//controller
 	private GUIController controller;
@@ -275,7 +279,7 @@ public class MainGUI extends Application{
 			newSubNameT.clear();
 		});
 		
-		//TODO
+		//removes the current subject 
 		removeSubj.setOnAction(e->{
 			controller.removeSubject(subjButtons,followedSubjButtons);
 			
@@ -292,7 +296,7 @@ public class MainGUI extends Application{
 			}
 		});	
 		
-		//TODO
+		//adds a new document 
 		addDocument.setOnAction(e->{
 			try {
 				controller.addNewDocument(newDocumentName.getText(),FIITNotes,errMessDoc);
@@ -310,6 +314,7 @@ public class MainGUI extends Application{
 			}
 		});
 		
+		//unfollows the current subject for the current user
 		unfollowSubj.setOnAction(x->{
 			controller.removeFollow(followedSubjButtons);
 			MainLeft.getChildren().clear();
@@ -319,7 +324,7 @@ public class MainGUI extends Application{
 			}
 		});
 		
-		//TODO
+		//returns to the main window
 		backBN.setOnAction(e->{
 			MainCenter.getChildren().clear();
 			CenterLeft.getChildren().clear();
@@ -330,7 +335,7 @@ public class MainGUI extends Application{
 			controller.addAllDocuments(CenterLeft);
 		});
 		
-		//TODO
+		//displays the comments for the current subject 
 		comments.setOnAction(e->{
 			MainCenter.getChildren().clear();
 			try {
@@ -343,7 +348,7 @@ public class MainGUI extends Application{
 			MainCenter.getChildren().add(AllComments);
 		});
 		
-		//TODO
+		//sends a new comment 
 		send.setOnAction(e->{
 			try {
 				controller.addNewComment(comment.getText());

@@ -7,13 +7,21 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import Subjects.Subject;
-
+/**
+ * class that handles all the operations with users 
+ * @author Roli
+ *
+ */
 public class UserHandler {
-	public ArrayList<User> allUsers  = new ArrayList<User>();
-	User currentUser;
+	private ArrayList<User> allUsers  = new ArrayList<User>();
+	private User currentUser;
 	
-	//load all the existing users from the Users 
-	//folder and add them to an arrayList 
+	/**
+	 * load all the existing users from the Users 
+	 * folder and add them to an arrayList 
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void LoadUsers()throws IOException, ClassNotFoundException  {
 		File[] userFiles = new File("Users/").listFiles();
 		User u = null;
@@ -32,7 +40,12 @@ public class UserHandler {
 		}
 	}
 	
-	//handles login requests
+	/**
+	 * handles login requests
+	 * @param name
+	 * @param password
+	 * @return true/false
+	 */
 	public boolean LoginHandle(String name, String password) {
 		for(User u :allUsers) {
 			if(u.getName().equals(name) && u.getPassword().equals(password))
@@ -44,7 +57,14 @@ public class UserHandler {
 		return false;
 	}
 	
-	//handles new user requests 
+	/**
+	 * handles new user requests 
+	 * @param name
+	 * @param password
+	 * @param Type
+	 * @return true/false
+	 * @throws IOException
+	 */
 	public boolean NewUserHandle(String name,String password,String Type) throws IOException {
 		User newU;
 		if(Type.equals("Student"))
@@ -60,6 +80,11 @@ public class UserHandler {
 		return true;
 	}
 	
+	/**
+	 * removes the subject given as an argument 
+	 * form each users followed subjects 
+	 * @param s
+	 */
 	public void removeAllFollowedHandler(Subject s)
 	{
 		for(User u:allUsers)
@@ -73,6 +98,11 @@ public class UserHandler {
 		}
 	}
 	
+	/**
+	 * removes the subject given as an argument 
+	 * from the current users followed subjects 
+	 * @param s
+	 */
 	public void removeFollowedHandler(Subject s)
 	{
 			currentUser.removeFollowedSubject(s);
@@ -81,10 +111,11 @@ public class UserHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
 	}
 	
-	//returns the current user
+	/**
+	 * @return returns the current user
+	 */
 	public User getCurrentUser() {
 		return currentUser;
 	}

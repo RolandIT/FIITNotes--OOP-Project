@@ -1,15 +1,18 @@
 package Subjects;
-
-
-
+/**
+ * comments class 
+ * @author Roli
+ *
+ */
 public class Comment {
-	public String commenter;
-	public String message;
+	private String commenter;
+	private String message;
 	
 	public Comment(String u,String msg) {
-		commenter=u;
-		message=msg;
+		commenter = u;
+		message = msg;
 	}
+	
 	 public String getCommenter() {
 		 return commenter;
 	 }
@@ -18,6 +21,11 @@ public class Comment {
 		 return message;
 	 }
 	 
+	 /**
+	  * applies the priviledges of the current user 
+	  * @param priv
+	  * @return
+	  */
 	 public String applyPriviledges(String priv) {
 			
 		 priv = " ";

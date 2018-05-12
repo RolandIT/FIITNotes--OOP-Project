@@ -2,11 +2,15 @@ package Subjects;
 
 import java.io.File;
 import java.util.ArrayList;
-
+/**
+ * class that handles all the operations with documents 
+ * @author Roli
+ *
+ */
 public class DocumentHandler {
-	public ArrayList<Document> currentSubjDocuments = new ArrayList<Document>();
+	private ArrayList<Document> currentSubjDocuments = new ArrayList<Document>();
 	
-	//TODO 
+	//loads all the doccuments for the current subject
 	public void discoverDocuments(String folder) {
 		File[] docFiles = new File("Documents/"+folder).listFiles();
 		for(File doc : docFiles) {
@@ -14,7 +18,7 @@ public class DocumentHandler {
 		}
 	}
 	
-	//TODO
+	//returns a list of documents for the current subject 
 	@SuppressWarnings("unchecked")
 	public ArrayList<Document> getDocuments(){
 		ArrayList<Document> docs=new ArrayList<Document>();

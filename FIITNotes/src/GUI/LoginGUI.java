@@ -14,7 +14,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
+/**
+ * Login GUI class
+ * @author Roli
+ *
+ */
 public class LoginGUI extends Application{
 		
 		GUIController controller = new GUIController();

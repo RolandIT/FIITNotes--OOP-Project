@@ -4,7 +4,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+/**
+ * subject class
+ * @author Roli
+ *
+ */
 public class Subject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static int numberOfSubjects=0;
@@ -25,7 +29,10 @@ public class Subject implements Serializable {
 		return ownerID;
 	}
 	
-	//save object to the subjects folder
+	/**
+	 * save object to the subjects folder
+	 * @throws IOException
+	 */
 	public void saveSubject() throws IOException {
 		try {
 			FileOutputStream Fileout = new FileOutputStream("Subjects/" + this.subjName+".ser");

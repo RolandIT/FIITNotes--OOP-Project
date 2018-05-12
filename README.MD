@@ -1,5 +1,6 @@
-##Roland Szarka 
-##FIITNotes 
+## Roland Szarka 
+
+## FIITNotes 
 
 Program bude slúžiť na jednoduché zdieľanie/prístup k spoľahlivým študijným materiálom. Prihlásiť sa budeme môcť buď ako študent alebo ako učiteľ. Po prihlásení sa ako študent uvidíme zoznam predmetov vo forme tlačidiel (dlaždíc). Na boku okna budú „obľúbené“ alebo „sledované“ predmety a v strede okna všetky ostatné. Po kliknutí na nejaký predmet uvidíme zoznam dostupných materiálov ako napríklad poznámky z prednášky číslo 2. Každý súbor bude mať vlastné komentáre kde sa môžu študenti vyjadriť k spoľahlivosti informácií alebo diskutovať o učive.
 Po prihlásení sa ako učiteľ budeme mať možnosť vytvoriť nový predmet a taktiež prístup k predmetom ktoré sme už vytvorili. Pri už existujúcich predmetoch bude učiteľ môcť označiť súbory ako „dobré“ alebo „zlé-neúplné“ taktiež bude mať možnosť nevhodné súbory vymazať alebo sám pridať nejaké materiály ktoré budú špeciálne označené. Učiteľ bude môcť pri komentároch odpovedať na prípadné otázky , pričom jeho správy budú označené aby študenti videli na prvý pohlaď že to je učiteľ.
@@ -14,7 +15,7 @@ Po prihlásení sa ako učiteľ budeme mať možnosť vytvoriť nový predmet a 
 
 * Oddelená logika - logika riežená cez rozličné handlery a GUIController 
 
-## Odovzdávanie II 
+## Odovzdávanie III
  * Dedenie a polymorfizmus - 1. hierarchia ako pri odovzdávaní II 2. hierarchhia ri tiredach RegularComment a PriviledgedComment. Polymorfizmus pri metode applyPriviedges() . 
   
   * Agregácia , oddelená logika - rovnako ako pri odovzdávaní II 

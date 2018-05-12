@@ -1,14 +1,37 @@
-#FIITNotes 
+##Roland Szarka 
+##FIITNotes 
 
-Program bude slúi na jednoduché zdie¾anie/prístup k spo¾ahlivım študijnım materiálom. Prihlási sa budeme môc buï ako študent alebo ako uèite¾. Po prihlásení sa ako študent uvidíme zoznam predmetov vo forme tlaèidiel (dladíc). Na boku okna budú „ob¾úbené“ alebo „sledované“ predmety a v strede okna všetky ostatné. Po kliknutí na nejakı predmet uvidíme zoznam dostupnıch materiálov ako napríklad poznámky z prednášky èíslo 2. Kadı súbor bude ma vlastné komentáre kde sa môu študenti vyjadri k spo¾ahlivosti informácií alebo diskutova o uèive.
-Po prihlásení sa ako uèite¾ budeme ma monos vytvori novı predmet a taktie prístup k predmetom ktoré sme u vytvorili. Pri u existujúcich predmetoch bude uèite¾ môc oznaèi súbory ako „dobré“ alebo „zlé-neúplné“ taktie bude ma monos nevhodné súbory vymaza alebo sám prida nejaké materiály ktoré budú špeciálne oznaèené. Uèite¾ bude môc pri komentároch odpoveda na prípadné otázky , prièom jeho správy budú oznaèené aby študenti videli na prvı pohlaï e to je uèite¾.
+Program bude slÃºÅ¾iÅ¥ na jednoduchÃ© zdieÄ¾anie/prÃ­stup k spoÄ¾ahlivÃ½m Å¡tudijnÃ½m materiÃ¡lom. PrihlÃ¡siÅ¥ sa budeme mÃ´cÅ¥ buÄ ako Å¡tudent alebo ako uÄiteÄ¾. Po prihlÃ¡senÃ­ sa ako Å¡tudent uvidÃ­me zoznam predmetov vo forme tlaÄidiel (dlaÅ¾dÃ­c). Na boku okna budÃº â€obÄ¾ÃºbenÃ©â€œ alebo â€sledovanÃ©â€œ predmety a v strede okna vÅ¡etky ostatnÃ©. Po kliknutÃ­ na nejakÃ½ predmet uvidÃ­me zoznam dostupnÃ½ch materiÃ¡lov ako naprÃ­klad poznÃ¡mky z prednÃ¡Å¡ky ÄÃ­slo 2. KaÅ¾dÃ½ sÃºbor bude maÅ¥ vlastnÃ© komentÃ¡re kde sa mÃ´Å¾u Å¡tudenti vyjadriÅ¥ k spoÄ¾ahlivosti informÃ¡ciÃ­ alebo diskutovaÅ¥ o uÄive.
+Po prihlÃ¡senÃ­ sa ako uÄiteÄ¾ budeme maÅ¥ moÅ¾nosÅ¥ vytvoriÅ¥ novÃ½ predmet a taktieÅ¾ prÃ­stup k predmetom ktorÃ© sme uÅ¾ vytvorili. Pri uÅ¾ existujÃºcich predmetoch bude uÄiteÄ¾ mÃ´cÅ¥ oznaÄiÅ¥ sÃºbory ako â€dobrÃ©â€œ alebo â€zlÃ©-neÃºplnÃ©â€œ taktieÅ¾ bude maÅ¥ moÅ¾nosÅ¥ nevhodnÃ© sÃºbory vymazaÅ¥ alebo sÃ¡m pridaÅ¥ nejakÃ© materiÃ¡ly ktorÃ© budÃº Å¡peciÃ¡lne oznaÄenÃ©. UÄiteÄ¾ bude mÃ´cÅ¥ pri komentÃ¡roch odpovedaÅ¥ na prÃ­padnÃ© otÃ¡zky , priÄom jeho sprÃ¡vy budÃº oznaÄenÃ© aby Å¡tudenti videli na prvÃ½ pohlaÄ Å¾e to je uÄiteÄ¾.
 
-## Odovzdávanie II 
+## OdovzdÃ¡vanie II 
 
-* Dedenie - Instructor a Student dedí z triedy User
+* Dedenie - Instructor a Student dedÃ­ z triedy User
 
-* Agregácia - SubjectHandler agreguje objekty triedy Subject 
+* AgregÃ¡cia - SubjectHandler agreguje objekty triedy Subject 
 
-* Polymorfizmus - Userhandler obsahuje objekt currentUser typu User kde je uloenı Student alebo Instructor. Následne sa na currentUser zavolá metóda applyPrivileges() ktorá vykoná rozne zmeny podla typu usera
+* Polymorfizmus - Userhandler obsahuje objekt currentUser typu User kde je uloÅ¾enÃ½ Student alebo Instructor. NÃ¡sledne sa na currentUser zavolÃ¡ metÃ³da applyPrivileges() ktorÃ¡ vykonÃ¡ rozne zmeny podla typu usera
 
-* Oddelená logika - logika rieená cez rozlièné handlery a GUIController 
+* OddelenÃ¡ logika - logika rieÅ¾enÃ¡ cez rozliÄnÃ© handlery a GUIController 
+
+## OdovzdÃ¡vanie II 
+ * Dedenie a polymorfizmus - 1. hierarchia ako pri odovzdÃ¡vanÃ­ II 2. hierarchhia ri tiredach RegularComment a PriviledgedComment. Polymorfizmus pri metode applyPriviedges() . 
+  
+  * AgregÃ¡cia , oddelenÃ¡ logika - rovnako ako pri odovzdÃ¡vanÃ­ II 
+  
+  * zapuzdrenie - atribÃºty su private , pristupovanie k nim iba cez metody 
+  
+  * Vyuzity observer (odprezentovanÃ© na cviÄenÃ­) - zoznam listenerov v Subject handler , listenery sÃº vytvorenÃ© 
+  pomocou interfaceov, nastavovanÃ© v triede GUIController kde sa pridÃ¡vajÃº novÃ© cez subject handler 
+  
+  * VlastnÃ© vÃ½nimky (odprezentovanÃ© na cviÄenÃ­) - IllegalArgException 
+  
+  * GUI, vlastnÃ½ handler (odprezentovanÃ© na cviÄenÃ­) loginGUI, mainGUI triedy. Vlastny handler udalostÃ­ pri observeri kde 
+  sa spracuje udalosÅ¥ pridania novÃ©ho predmetu. 
+  
+  * vhniezdenÃ© triedy a rozhrania (odprezentovanÃ© na cviÄenÃ­) - bniezdenÃ¡ trieda v triedne GUIController, vniezdenÃ½ 
+  interface v NewSubjectListener interface.
+  
+  * lambda vÃ½razy (odprezentovanÃ© na cviÄenÃ­) - pri setOnAction metodach a pri observeri v GUIController triede kde sa metode OnNewSubject odovzdÃ¡va blok kodu cez lambda vyraz 
+  
+  

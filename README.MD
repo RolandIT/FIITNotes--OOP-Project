@@ -35,4 +35,49 @@ Po prihlásení sa ako učiteľ budeme mať možnosť vytvoriť nový predmet a 
   
   * lambda výrazy (odprezentované na cvičení) - pri setOnAction metodach a pri observeri v GUIController triede kde sa metode OnNewSubject odovzdáva blok kodu cez lambda vyraz 
   
+  Javadoc sa nachadza v FIITNotes/doc 
+  UML diagram tired v FIITNotes/uml
+  
+  Zoznam zmien: 
+  Initial Commit
+  Initial classes added
+  Main and GUI classes created
+  Login UI created
+  login implemented
+  attributes and methodes added to document and subject classes
+  GUI split into MainGUI and LoginGUI classes
+  Subject dicovery implemented
+  favourite subjects added to each user based on userinfo txt
+  New acc creation added, account data implementation through serializatin
+  Subject data implemented via Serialization, New subject creation added
+  New Subjects dynamially added to the GUI using the Observer pattern
+  User types implemented
+  favourite subjects added using Observer
+  missing files added
+  User ID added, Subject deletion based on owner ID
+  refatoring - comments added to the main gui class
+  refatoring - comments added to the login gui class
+  refatoring - comments added, code style changes
+  gitignore updated
+  Subject removal implemented
+  gitignore updated
+  Refactoring logic from LoginGUI moved to GUIController class
+  Refactoring- mainGUI logic moved to GUIController class
+  readme.md updated
+  readme.md updated
+  readme.md updated
+  temporary files removed
+  Implemented document uploading to subject folders
+  bugfixes
+  bugfixes
+  subject unfollow implemented, all known bugs fixed
+  custom exception for emptz subjects and documents added
+  subject commenting added
+  nested interface implemented
+  refactoring + javadoc added
+  gitignore updated
+  excluded files added
+  example files added
+  Update README.MD
+  Update README.MD
   
